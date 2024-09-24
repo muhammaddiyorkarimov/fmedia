@@ -1,0 +1,172 @@
+.root-layout {
+    display: flex;
+    flex-direction: column;
+}
+
+header {
+    width: 100%;
+    display: flex;
+    flex-direction: column;
+    background-color: var(--primary-color);
+}
+
+header .header-top {
+    display: flex;
+    align-items: center;
+}
+
+header .header-top .container {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+}
+
+.header-top .weather {
+    display: flex;
+    align-items: center;
+    gap: 5px;
+}
+
+.header-top .weather span {
+    font-size: var(--primary-text-size);
+    color: var(--text-color);
+}
+
+.header-top .weather i {
+    color: var(--text-color);
+    font-size: var(--primary-text-size);
+    margin: 4px 0 0 0;
+}
+
+.header-top .language {
+    display: flex;
+    align-items: center;
+    gap: 5px;
+    user-select: none;
+}
+
+.header-top .language .language-selector {
+    position: relative;
+    display: flex;
+    align-items: center;
+}
+
+.header-top .language .language-selector {
+    font-size: var(--primary-text-size);
+    color: var(--text-color);
+}
+
+.header-top .language i {
+    color: var(--text-color);
+    font-size: var(--primary-text-size);
+    margin: 4px 0 0 2px;
+}
+
+.header-top .language .language-selector i {
+    color: var(--text-color);
+    font-size: var(--primary-text-size);
+    margin: 4px 0 0 2px;
+}
+
+.header-top .language .language-selector .dropdown-menu {
+    position: absolute;
+    top: 30px;
+    left: 20px;
+    z-index: 100;
+    display: flex;
+    flex-direction: column;
+    align-items: start;
+    background-color: var(--primary-color);
+    max-height: 0;
+    overflow: hidden;
+    transition: max-height 0.3s ease;
+}
+
+.header-top .language .language-selector .dropdown-menu.active {
+    max-height: 200px;
+}
+
+.header-top .language .language-selector .dropdown-menu span {
+    width: 100%;
+    padding: 10px;
+    font-size: var(--primary-text-size);
+    color: var(--text-color);
+}
+
+.header-top .language .language-selector .dropdown-menu span:hover {
+    background-color: var(--border-color);
+}
+
+.header-main {
+    width: 100%;
+    margin-top: 5px;
+    border-top: 1px solid var(--border-color);
+    vertical-align: center;
+    display: flex;
+    justify-content: center;
+}
+
+.header-main .container {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+}
+
+nav {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin: 0 auto;
+    border-left: 1px solid var(--border-color);
+    border-right: 1px solid var(--border-color);
+    width: 100%;
+    margin: 0 20px;
+}
+
+nav ul {
+    display: flex;
+    gap: 20px;
+}
+
+nav ul li {
+    list-style: none;
+    padding: 15px 0;
+}
+
+nav ul li.active {
+    border-bottom: 2px solid var(--text-active);
+}
+
+nav ul li.active a{
+    color: var(--text-active);
+}
+
+nav ul li a {
+    font-size: var(--primary-text-size);
+    color: var(--text-color);
+    text-decoration: none;
+}
+
+.header-main .search {
+    display: flex;
+    align-items: center;
+}
+
+.header-main .search i {
+    color: var(--text-color);
+    font-size: var(--primary-text-size);
+}
+
+.header-main .search input {
+    display: none;
+}
+
+.dark-mode-toggle i {
+   color: var(--text-color);
+    font-size: var(--primary-text-size); 
+}
+
+.fa-moon {
+    font-size: var(--primary-text-size);
+    color: white;
+}
