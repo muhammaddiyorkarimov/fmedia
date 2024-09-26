@@ -1,4 +1,7 @@
 import logo from '../../src/images/logo/logo.svg'
+import logoDark from '../../src/images/logo/logo dark.svg'
+import logo2 from '../../src/images/logo/logo2.svg'
+
 
 import sunny from '../../src/images/icons/sunny.png'
 import sun from '../../src/images/icons/sun.png'
@@ -9,6 +12,8 @@ import arrowDown from '../../src/images/icons/arrowDown.png'
 
 const images = {
   logo,
+  logoDark,
+  logo2,
   
   sunny,
   sun,

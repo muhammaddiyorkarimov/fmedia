@@ -1,14 +1,15 @@
+import { useState } from 'react';
 import { NavLink, Outlet } from 'react-router-dom';
 import './rootLayout.css';
 import images from './../images/index';
 import { useTranslation } from 'react-i18next';
-import { useState } from 'react';
 
 function RootLayout() {
   const { t, i18n } = useTranslation();
   const [activeDropdown, setActiveDropdown] = useState(false);
   const [activeIndex, setActiveIndex] = useState(0);
-  const [isDarkMode, setIsDarkMode] = useState(false); // State to manage dark mode
+  const [isDarkMode, setIsDarkMode] = useState(false);
+  const [isSearchOpen, setIsSearchOpen] = useState(false);
 
   const handleItemClick = (index) => {
     setActiveIndex(index);
@@ -28,24 +29,25 @@ function RootLayout() {
     document.body.classList.toggle('dark-mode');
   };
 
+  const toggleSearch = () => {
+    setIsSearchOpen((prev) => !prev);
+  };
+
   return (
     <div className="root-layout">
       <header>
         <div className="header-top">
           <div className="container">
-            <div className="weather">
-              <img width={20} src={images.sunny} alt="weather icon" />
-              <span>{t('grade')}</span>
-              <span>{t('location')}</span>
-              <i className="fa-solid fa-chevron-down"></i>
-            </div>
             <div className="logo">
               <img src={images.logo} alt="site's logo" />
             </div>
-            <div className="language">
-              <i className="fa-solid fa-globe"></i>
+            <div className="logo-center">
+              <p>Fergana Media.uz</p>
+            </div>
+            <div onClick={toggleDropdown} className="language">
+              <img src={images.globe} alt="globe icon" />
               <div className="language-selector">
-                <span onClick={toggleDropdown} className="dropdown-toggle">
+                <span className="dropdown-toggle">
                   {t('language')}
                 </span>
                 <i className="fa-solid fa-chevron-down"></i>
@@ -88,9 +90,16 @@ function RootLayout() {
               </ul>
             </nav>
 
-            <div className="search">
-              <i className="fa-solid fa-magnifying-glass"></i>
-              <input type="text" placeholder="Qidirish..." />
+            <div className={`search ${isSearchOpen ? 'open' : ''}`}>
+              <input
+                type="text"
+                placeholder="Qidirish..."
+                className={`${isSearchOpen ? 'active' : ''}`}
+              />
+              <i
+                className={`fa-solid fa-${isSearchOpen ? 'xmark rotate' : 'magnifying-glass'}`}
+                onClick={toggleSearch}></i>
+
             </div>
           </div>
         </div>
@@ -98,7 +107,42 @@ function RootLayout() {
       <main>
         <Outlet />
       </main>
-      <footer></footer>
+      <footer>
+        <div className="container">
+          <div className="items">
+            <div className="item">
+              <img src={!isDarkMode ? images.logo2 : images.logoDark} alt="logo" />
+              <p>Yangiliklarimiz xalq uchun</p>
+              <div className="social-networks">
+                <i className='fab fa-instagram'></i>
+                <i className='fab fa-telegram'></i>
+                <i className='fab fa-facebook'></i>
+                <i className='fab fa-youtube'></i>
+              </div>
+            </div>
+            <div className="item">
+              <div className="title">Kontaktlarimiz</div>
+              <ul>
+                <li>Manzil: Toshkent shaxar, Gulistonv</li>
+                <li>Ferganamedia@gmail.uz</li>
+                <li>+998 (93) 123-45-67</li>
+              </ul>
+            </div>
+            <div className="item">
+              <div className="title">Sayt xaqida</div>
+              <ul>
+                <li>Veb sayt OAV sifatida 2018 yil 28 oktyabr kuni Uzbekistan
+                  Respublikasi Prezidenti Adminstratsiyasi xuzuridagi Axborot
+                  va ommaviy kommunikatsiyalar agentligidan 1089 raqam
+                  ro’yxatga olingan.</li>
+              </ul>
+            </div>
+          </div>
+        </div>
+        <div className="bottom">
+          <p>© created by <a target='_blank' href="https://fassco.uz">Fassco</a> company</p>
+        </div>
+      </footer>
     </div>
   );
 }
