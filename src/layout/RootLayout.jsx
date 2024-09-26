@@ -111,7 +111,7 @@ function RootLayout() {
         <div className="container">
           <div className="items">
             <div className="item">
-              <img src={!isDarkMode ? images.logo2 : images.logoDark} alt="logo" />
+              <img src={!isDarkMode ? images.logoDark : images.logo2} alt="logo" />
               <p>Yangiliklarimiz xalq uchun</p>
               <div className="social-networks">
                 <i className='fab fa-instagram'></i>
