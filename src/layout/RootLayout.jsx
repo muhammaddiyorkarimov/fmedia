@@ -3,6 +3,7 @@ import { NavLink, Outlet } from 'react-router-dom';
 import './rootLayout.css';
 import images from './../images/index';
 import { useTranslation } from 'react-i18next';
+import SearchModal from '../components/searchModal/SearchModal';
 
 function RootLayout() {
   const { t, i18n } = useTranslation();
@@ -10,10 +11,8 @@ function RootLayout() {
   const [activeIndex, setActiveIndex] = useState(0);
   const [isDarkMode, setIsDarkMode] = useState(false);
   const [isSearchOpen, setIsSearchOpen] = useState(false);
+  const [isOpen, setIsOpen] = useState(false);
 
-  const handleItemClick = (index) => {
-    setActiveIndex(index);
-  };
 
   const changeLanguage = (lang) => {
     i18n.changeLanguage(lang);
@@ -33,8 +32,57 @@ function RootLayout() {
     setIsSearchOpen((prev) => !prev);
   };
 
+  const toggleOpenSidebar = () => {
+    setIsOpen((prev) => !prev);
+  }
+
+  const navItems = [
+    { path: '/', label: 'Home' },
+    { path: '/uzbekistan', label: 'Uzbekistan' },
+    { path: '/jaxon', label: 'Jaxon' },
+    { path: '/iqtisodiyot', label: 'Iqtisodiyot' },
+    { path: '/jamiyat', label: 'Jamiyat' },
+    { path: '/sport', label: 'Sport' },
+    { path: '/audio', label: 'Audio' },
+    { path: '/texnologiya', label: 'Texnologiya' }
+  ];
+
   return (
     <div className="root-layout">
+      <div className={`sidebar ${isOpen ? 'active' : ''}`}>
+        <div className="logo">
+          <img width={150} src={!isDarkMode ? images.logoDark : images.logo2} alt="logo" />
+          <div className="hamburger-menu">
+            <i onClick={toggleOpenSidebar} className='fa-solid fa-xmark'></i>
+          </div>
+        </div>
+        <nav>
+          <ul>
+            {navItems.map((item, index) => (
+              <li key={index} className={activeIndex === index ? 'active' : ''} onClick={() => setActiveIndex(index)}>
+                <NavLink onClick={() => setIsOpen(false)} to={item.path}>{item.label}</NavLink>
+              </li>
+            ))}
+          </ul>
+        </nav>
+        <div className="language">
+          <div onClick={toggleDropdown} className="language-selector">
+            <img width={20} src={!isDarkMode ? images.darkGlobe : images.globe} alt="logo" />
+            <span className="dropdown-toggle">
+              {t('language')}
+            </span>
+            <i className="fa-solid fa-chevron-down"></i>
+            <div className={`dropdown-menu ${activeDropdown ? 'active' : ''}`}>
+              <span onClick={() => changeLanguage('uz')}>{t('Uzbek')}</span>
+              <span onClick={() => changeLanguage('en')}>{t('English')}</span>
+              <span onClick={() => changeLanguage('ru')}>{t('Russian')}</span>
+            </div>
+          </div>
+          <div className="dark-mode-toggle">
+            <img width={20} onClick={toggleTheme} src={isDarkMode ? images.moon : images.sun} alt="logo" />
+          </div>
+        </div>
+      </div>
       <header>
         <div className="header-top">
           <div className="container">
@@ -44,9 +92,9 @@ function RootLayout() {
             <div className="logo-center">
               <p>Fergana Media.uz</p>
             </div>
-            <div onClick={toggleDropdown} className="language">
+            <div className="language">
               <img src={images.globe} alt="globe icon" />
-              <div className="language-selector">
+              <div onClick={toggleDropdown} className="language-selector">
                 <span className="dropdown-toggle">
                   {t('language')}
                 </span>
@@ -56,6 +104,10 @@ function RootLayout() {
                   <span onClick={() => changeLanguage('en')}>{t('English')}</span>
                   <span onClick={() => changeLanguage('ru')}>{t('Russian')}</span>
                 </div>
+              </div>
+              <div className="hamburger-menu">
+                <i className='fa-solid fa-magnifying-glass' onClick={toggleSearch}></i>
+                <i onClick={toggleOpenSidebar} className='fa-solid fa-bars'></i>
               </div>
             </div>
           </div>
@@ -69,37 +121,18 @@ function RootLayout() {
             </div>
             <nav>
               <ul>
-                {[
-                  { path: '/', label: 'Home' },
-                  { path: '/uzbekistan', label: 'Uzbekistan' },
-                  { path: '/jaxon', label: 'Jaxon' },
-                  { path: '/iqtisodiyot', label: 'Iqtisodiyot' },
-                  { path: '/jamiyat', label: 'Jamiyat' },
-                  { path: '/sport', label: 'Sport' },
-                  { path: '/audio', label: 'Audio' },
-                  { path: '/texnologiya', label: 'Texnologiya' },
-                ].map((item, index) => (
-                  <li
-                    key={index}
-                    className={activeIndex === index ? 'active' : ''}
-                    onClick={() => handleItemClick(index)}
-                  >
+                {navItems.map((item, index) => (
+                  <li key={index} className={activeIndex === index ? 'active' : ''} onClick={() => setActiveIndex(index)}>
                     <NavLink to={item.path}>{item.label}</NavLink>
                   </li>
                 ))}
               </ul>
             </nav>
 
-            <div className={`search ${isSearchOpen ? 'open' : ''}`}>
-              <input
-                type="text"
-                placeholder="Qidirish..."
-                className={`${isSearchOpen ? 'active' : ''}`}
-              />
+            <div className='search'>
               <i
-                className={`fa-solid fa-${isSearchOpen ? 'xmark rotate' : 'magnifying-glass'}`}
+                className="fa-solid fa-magnifying-glass"
                 onClick={toggleSearch}></i>
-
             </div>
           </div>
         </div>
@@ -143,6 +176,8 @@ function RootLayout() {
           <p>© created by <a target='_blank' href="https://fassco.uz">Fassco</a> company</p>
         </div>
       </footer>
+
+      <SearchModal isOpen={isSearchOpen} onClose={toggleSearch} />
     </div>
   );
 }

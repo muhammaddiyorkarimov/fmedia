@@ -5,8 +5,10 @@ import logo2 from '../../src/images/logo/logo2.svg'
 
 import sunny from '../../src/images/icons/sunny.png'
 import sun from '../../src/images/icons/sun.png'
+import moon from '../../src/images/icons/moon.png'
 import search from '../../src/images/icons/search.png'
 import globe from '../../src/images/icons/globe.png'
+import darkGlobe from '../../src/images/icons/dark globe.png'
 import arrowDown from '../../src/images/icons/arrowDown.png'
 
 
@@ -17,8 +19,10 @@ const images = {
   
   sunny,
   sun,
+  moon,
   search,
   globe,
+  darkGlobe,
   arrowDown,
 };
 
