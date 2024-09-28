@@ -1,6 +1,7 @@
 import { createBrowserRouter, createRoutesFromElements, Route } from "react-router-dom"
 import RootLayout from "../layout/RootLayout"
 import Home from './../pages/home/Home';
+import News from './../pages/News/News';
 
 
 function RoutesWrap() {
@@ -10,6 +11,7 @@ function RoutesWrap() {
             <>
                 <Route path='/' element={<RootLayout/>}>
                     <Route index element={<Home/>}/>
+                    <Route path="/news" element={<News/>}/>
                 </Route>
             </>
         )

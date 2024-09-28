@@ -1,8 +1,11 @@
+import TopNews from '../../components/topNews/TopNews'
 import './home.css'
 
 function Home() {
   return (
-    <div className="home"></div>
+    <div className="home">
+      <TopNews/>
+    </div>
   )
 }
 

@@ -1,6 +1,12 @@
 .root-layout {
+    position: relative;
     display: flex;
     flex-direction: column;
+    justify-content: space-between;
+}
+
+main {
+    flex: 1;
 }
 
 header {
@@ -195,12 +201,14 @@ nav ul li a {
 
 }
 
+
 /* footer */
 footer {
+    display: none !important;
     width: 100%;
     min-height: 180px;
-    position: absolute;
-    bottom: 0;
+    position: absolute !important;
+    bottom: 0 !important;
     display: flex;
     flex-direction: column;
     align-items: center;

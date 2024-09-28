@@ -11,6 +11,8 @@ import globe from '../../src/images/icons/globe.png'
 import darkGlobe from '../../src/images/icons/dark globe.png'
 import arrowDown from '../../src/images/icons/arrowDown.png'
 
+import rais from '../../src/images/images/rais.png'
+
 
 const images = {
   logo,
@@ -24,6 +26,8 @@ const images = {
   globe,
   darkGlobe,
   arrowDown,
+
+  rais,
 };
 
 export default images;
