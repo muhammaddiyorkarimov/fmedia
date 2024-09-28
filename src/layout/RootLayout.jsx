@@ -4,6 +4,8 @@ import './rootLayout.css';
 import images from './../images/index';
 import { useTranslation } from 'react-i18next';
 import SearchModal from '../components/searchModal/SearchModal';
+import useFetch from './../hooks/useFetch';
+import LandingService from '../services/landing/landing';
 
 function RootLayout() {
   const { t, i18n } = useTranslation();
@@ -12,6 +14,9 @@ function RootLayout() {
   const [isDarkMode, setIsDarkMode] = useState(false);
   const [isSearchOpen, setIsSearchOpen] = useState(false);
   const [isOpen, setIsOpen] = useState(false);
+
+  const { data, loading, error } = useFetch(LandingService.getNavbar)
+  console.log(data.results)
 
 
   const changeLanguage = (lang) => {

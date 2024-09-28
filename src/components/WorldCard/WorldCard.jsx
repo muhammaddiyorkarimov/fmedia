@@ -1,4 +1,4 @@
-import React, { useEffect, useRef } from "react";
+import { useEffect, useRef } from "react";
 import "./WorldCard.css";
 import ViewAllButton from "../ViewAllButton/ViewAllButton";
 import { Swiper, SwiperSlide } from "swiper/react";
@@ -89,7 +89,7 @@ const WorldCard = ({ data }) => {
           });
         }}
       >
-        {data.map((item, index) => (
+        {data?.map((item, index) => (
           <SwiperSlide key={index}>
             <div className="world-card">
               <div className="world-card-image">
