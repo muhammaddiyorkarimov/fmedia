@@ -69,7 +69,7 @@ header .header-top .container {
 .language .language-selector .dropdown-menu {
     position: absolute;
     top: 30px;
-    left: 20px;
+    right: 0px;
     z-index: 100;
     display: flex;
     flex-direction: column;

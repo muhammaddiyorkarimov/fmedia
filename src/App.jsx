@@ -1,6 +1,7 @@
 
 import { RouterProvider } from 'react-router-dom';
 import RoutesWrap from './routes/Route';
+import './i18n'
 
 function App() {
 

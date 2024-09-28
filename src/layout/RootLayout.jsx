@@ -37,15 +37,16 @@ function RootLayout() {
   }
 
   const navItems = [
-    { path: '/', label: 'Home' },
-    { path: '/uzbekistan', label: 'Uzbekistan' },
-    { path: '/jaxon', label: 'Jaxon' },
-    { path: '/iqtisodiyot', label: 'Iqtisodiyot' },
-    { path: '/jamiyat', label: 'Jamiyat' },
-    { path: '/sport', label: 'Sport' },
-    { path: '/audio', label: 'Audio' },
-    { path: '/texnologiya', label: 'Texnologiya' }
+    { path: '/', label: t('home') },
+    { path: '/uzbekistan', label: t('uzbekistan') },
+    { path: '/jaxon', label: t('jaxon') },
+    { path: '/iqtisodiyot', label: t('iqtisodiyot') },
+    { path: '/jamiyat', label: t('jamiyat') },
+    { path: '/sport', label: t('sport') },
+    { path: '/audio', label: t('audio') },
+    { path: '/texnologiya', label: t('texnologiya') }
   ];
+  
 
   return (
     <div className="root-layout">
@@ -67,7 +68,6 @@ function RootLayout() {
         </nav>
         <div className="language">
           <div onClick={toggleDropdown} className="language-selector">
-            <img width={20} src={!isDarkMode ? images.darkGlobe : images.globe} alt="logo" />
             <span className="dropdown-toggle">
               {t('language')}
             </span>
@@ -78,6 +78,8 @@ function RootLayout() {
               <span onClick={() => changeLanguage('ru')}>{t('Russian')}</span>
             </div>
           </div>
+
+
           <div className="dark-mode-toggle">
             <img width={20} onClick={toggleTheme} src={isDarkMode ? images.moon : images.sun} alt="logo" />
           </div>
@@ -105,6 +107,7 @@ function RootLayout() {
                   <span onClick={() => changeLanguage('ru')}>{t('Russian')}</span>
                 </div>
               </div>
+
               <div className="hamburger-menu">
                 <i className='fa-solid fa-magnifying-glass' onClick={toggleSearch}></i>
                 <i onClick={toggleOpenSidebar} className='fa-solid fa-bars'></i>
