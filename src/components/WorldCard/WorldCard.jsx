@@ -9,7 +9,7 @@ import { Link, useNavigate } from "react-router-dom";
 import SkeletonContent from "../SkeletonContent/SkeletonContent";
 
 const WorldCard = ({ data, category }) => {
-  const [descriptions, setDescriptions] = useState({});
+  const [descriptions, setDescriptions] = useState({});  
 
   const navigate = useNavigate();
   const prevRef = useRef(null);
@@ -78,7 +78,7 @@ const WorldCard = ({ data, category }) => {
         <Swiper
           spaceBetween={20}
           slidesPerView={4}
-          autoplay={{ delay: 5000, disableOnInteraction: false }}
+          autoplay={{ delay: 50000, disableOnInteraction: false }}
           loop={true}
           navigation={{ nextEl: nextRef.current, prevEl: prevRef.current }}
           modules={[Navigation, Autoplay]}

@@ -100,7 +100,7 @@
 
 .main-news-wrapper .bottom-news {
     width: 100%;
-    padding-top: 20px;
+    padding-top: 20px !important;
     display: flex;
     align-items: start;
     justify-content: space-between;
@@ -118,7 +118,7 @@
 }
 
 .main-news-wrapper .bottom-news .img-wrapper img {
-    width: 100%;
+    width: 100% !important;
     height: 100%;
     object-fit: cover;
 }
@@ -389,11 +389,15 @@ aside {
 
 @media (max-width: 640px) {
     .main-news-wrapper .bottom-news .news-info {
-        height: 100px;
+        height: 100px !important;
     }
 
     .side-news-card .img-wrapper {
-        height: 100px;
+        height: 100px !important;
+    }
+
+    .side-news-card .news-info {
+        height: 100px !important;
     }
 
     .bottom-news .img-wrapper {

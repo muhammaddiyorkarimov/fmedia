@@ -19,6 +19,7 @@ function Home() {
     error: worldDataError,
   } = useFetch(LandingService.getArticle, false);
 
+
   const {
     data: videoData,
     loading: videoDataLoading,

@@ -34,3 +34,14 @@
     background-color: var(--text-active);
 }
 
+@media (max-width: 1060px) {
+    .not-found-container {
+        margin-bottom: 280px !important;
+    }
+}
+@media (max-width: 768px) {
+    .not-found-container {
+        top: 100px;
+        margin-bottom: 220px !important;
+    }
+}
