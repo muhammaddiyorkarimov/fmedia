@@ -47,12 +47,18 @@
 
 .world-card-content {
     height: 260px;
-    padding: 15px 30px 20px;
+    padding: 10px;
     border: 1px solid var(--border-color);
     border-top: none;
     display: flex;
     flex-direction: column;
-    justify-content: space-between;
+    scrollbar-width: none;
+    -ms-overflow-style: none;
+    overflow: auto;
+}
+
+.world-card-content::-webkit-scrollbar {
+    display: none;
 }
 
 .world-card-date {

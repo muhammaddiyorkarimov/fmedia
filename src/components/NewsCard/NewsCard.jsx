@@ -63,31 +63,33 @@ const NewsCard = ({ data }) => {
 
   return (
     <div className="news-card-wrapper">
-      <h1>So'ngi yangiliklar</h1>
-      {randomSixNews?.map((newsItem, index) => (
-        <div key={index} className="news-card">
-          <img
-            src={
-              newsItem.image ||
-              "https://buffer.com/library/content/images/size/w1200/2023/10/free-images.jpg"
-            }
-            alt="news"
-          />
-          <div className="news-card-content">
-            <div className="news-card-tag-date">
-              <span className="news-card-tag">
-                {newsItem.categories.length > 0
-                  ? getCategoryTitle(newsItem.categories[0])
-                  : "No Category"}
-              </span>
-              <p className="news-card-date">{formDate(newsItem.created_at)}</p>
+      <div className="container">
+        <h1>So'ngi yangiliklar</h1>
+        {randomSixNews?.map((newsItem, index) => (
+          <div key={index} className="new-card">
+            <img
+              src={
+                newsItem.image ||
+                "https://buffer.com/library/content/images/size/w1200/2023/10/free-images.jpg"
+              }
+              alt="news"
+            />
+            <div className="news-card-content">
+              <div className="news-card-tag-date">
+                <span className="news-card-tag">
+                  {newsItem.categories.length > 0
+                    ? getCategoryTitle(newsItem.categories[0])
+                    : "No Category"}
+                </span>
+                <p className="news-card-date">{formDate(newsItem.created_at)}</p>
+              </div>
+              <Link to={`/news/${newsItem.id}`}>
+                <h3>{newsItem.title}</h3>
+              </Link>
             </div>
-            <Link to={`/news/${newsItem.id}`}>
-              <h3>{newsItem.title}</h3>
-            </Link>
           </div>
-        </div>
-      ))}
+        ))}
+      </div>
     </div>
   );
 };

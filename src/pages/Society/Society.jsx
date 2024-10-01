@@ -14,7 +14,9 @@ function Society() {
     data: worldData,
     loading: worldDataLoading,
     error: worldDataError,
-  } = useFetch(LandingService.getArticle, false);
+  } = useFetch(LandingService.getAllArticles);
+
+  console.log(worldData)
 
   useEffect(() => {
     const loadCategory = async () => {

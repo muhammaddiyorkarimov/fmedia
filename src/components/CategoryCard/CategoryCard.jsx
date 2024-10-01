@@ -7,6 +7,8 @@ const CategoryCard = ({ data, category }) => {
   const [descriptions, setDescriptions] = useState({});
   const navigate = useNavigate();
 
+  console.log(data)
+
   const isHeadlineLong = (headline) => {
     const wordCount = (headline?.split(" ") || []).length;
     return wordCount > 12;

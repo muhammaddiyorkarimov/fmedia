@@ -92,7 +92,7 @@ const VideoCard = ({ data, category, loading }) => {
   };
 
   const truncateTitle = (title, maxLines = 4) => {
-    const maxLength = 100;
+    const maxLength = 120;
     if (title.length > maxLength) {
       return title.slice(0, maxLength) + "...";
     }
@@ -164,13 +164,10 @@ const VideoCard = ({ data, category, loading }) => {
                 <SwiperSlide key={item.id}>
                   <div className="video-card">
                     <div
+                    onClick={() => handleVideoClick(item.url, item.title, item.intro)}
                       className="video-card-image"
                       style={{ background: !cover ? "black" : "none" }}
                     >
-                      <button
-                        onClick={() => handleVideoClick(item.url, item.title, item.intro)}
-                        style={{ border: "none", background: "none" }}
-                      >
                         {cover ? (
                           <img src={cover} alt={item.title} />
                         ) : (
@@ -185,7 +182,6 @@ const VideoCard = ({ data, category, loading }) => {
                         <div className="video-card-youtube-icon">
                           <img src={images.youtube_icon} alt="youtube icon" />
                         </div>
-                      </button>
                     </div>
 
                     <div className="video-card-content">

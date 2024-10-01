@@ -20,6 +20,17 @@ const LandingService = {
       throw error.response || new Error("Unknown error");
     }
   },
+  async getAllArticles() {
+    try {
+      const response = await axios.get(`/articles/`);
+      return {
+        results: response.data.results,
+        count: response.data.count
+      };
+    } catch (error) {
+      throw error.response || new Error("Unknown error");
+    }
+  },
 };
 
 export default LandingService;

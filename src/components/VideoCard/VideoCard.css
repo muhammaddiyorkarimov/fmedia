@@ -47,6 +47,10 @@
     text-decoration: none;
 }
 
+.video-card-image button {
+    border: 10px solid red;
+}
+
 .video-card-youtube-icon {
     position: absolute;
     top: 50%;

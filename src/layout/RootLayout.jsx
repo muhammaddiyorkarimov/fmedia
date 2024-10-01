@@ -104,7 +104,7 @@ const changeLanguage = async (lang) => {
               className={activeIndex === -2 ? 'active' : ''}
               onClick={() => setActiveIndex(-2)}
             >
-              <NavLink to="/">{t('home')}</NavLink>
+              {/* <NavLink to="/">{t('home')}</NavLink> */}
             </li>
 
             {navItems.map((item, index) => (
@@ -183,7 +183,7 @@ const changeLanguage = async (lang) => {
                   className={activeIndex === -1 ? 'active' : ''}
                   onClick={() => setActiveIndex(-1)}
                 >
-                  <NavLink to="/">{t('home')}</NavLink>
+                  {/* <NavLink to="/">{t('home')}</NavLink> */}
                 </li>
 
                 {navItems.map((item, index) => (

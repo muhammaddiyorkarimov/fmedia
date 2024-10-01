@@ -7,13 +7,12 @@ import { useParams } from "react-router-dom";
 import SkeletonContent from "../../components/SkeletonContent/SkeletonContent";
 import useFetch from "../../hooks/useFetch";
 
-function News() {
+function VideoComponent() {
   const [articleDetailedData, setArticleDetailedData] = useState(null);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
   const { id } = useParams();
 
-  console.log(articleDetailedData)
 
   useEffect(() => {
     const loadArticles = async () => {
@@ -51,4 +50,4 @@ function News() {
   );
 }
 
-export default News;
+export default VideoComponent;

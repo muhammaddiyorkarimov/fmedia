@@ -48,19 +48,21 @@ const ArticleCard = ({ data }) => {
 
   return (
     <div className="article-container">
-      <h1 className="article-header">{articleCategory?.title}</h1>
+      <div className="container">
+        <h1 className="article-header">{articleCategory?.title}</h1>
 
-      <div className="article-image-container">
-        <img
-          src={data?.image || images.placeholder}
-          alt="news"
-          className="article-image"
-        />
+        <div className="article-image-container">
+          <img
+            src={data?.image || images.placeholder}
+            alt="news"
+            className="article-image"
+          />
+        </div>
+        <p className="article-date">{formDate(data?.created_at)}</p>
+        <h2 className="article-title">{data?.intro}</h2>
+
+        <p className="article-content">{data?.content}</p>
       </div>
-      <p className="article-date">{formDate(data?.created_at)}</p>
-      <h2 className="article-title">{data?.intro}</h2>
-
-      <p className="article-content">{data?.content}</p>
     </div>
   );
 };

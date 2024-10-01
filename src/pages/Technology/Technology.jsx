@@ -14,7 +14,7 @@ function Technology() {
     data: worldData,
     loading: worldDataLoading,
     error: worldDataError,
-  } = useFetch(LandingService.getArticle, false);
+  } = useFetch(LandingService.getAllArticles, false);
 
   useEffect(() => {
     const loadCategory = async () => {
