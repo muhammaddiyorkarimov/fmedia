@@ -1,0 +1,27 @@
+{
+    "redirects": [
+      {
+        "source": "/old-path",
+        "destination": "/new-path",
+        "permanent": true
+      }
+    ],
+    "rewrites": [
+      {
+        "source": "/api/:path*", 
+        "destination": "https://api.yourbackend.com/:path*" 
+      }
+    ],
+    "headers": [
+      {
+        "source": "/(.*)",
+        "headers": [
+          {
+            "key": "X-Custom-Header",
+            "value": "my custom header value"
+          }
+        ]
+      }
+    ]
+  }
+  
