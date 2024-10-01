@@ -1,6 +1,6 @@
 @import url('../../../src/assets/vatiable/variable.css');
 
-.world-cards {
+.video-cards {
     display: grid;
     grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
     gap: 20px;
@@ -8,13 +8,13 @@
     padding: 20px;
 }
 
-.world-card {
+.video-card {
     background-color: transparent;
     overflow: hidden;
     /* width: 100%; */
     max-width: 350px;
     width: 100%;
-    height: 550px;
+    height: 450px;
     /* box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1); */
     margin: 0 auto;
     /* border-width: 0px, 2px, 2px, 2px; */
@@ -23,39 +23,66 @@
     position: relative;
 }
 
-.swiper-slide {
+/* .video-card-image {
     width: 100%;
-    display: flex;
-    justify-content: center;
-    align-items: center;
-}
-
-.world-card-image {
-    width: 100%;
-    height: 279px;
+    height: 279px !important;
     border: none;
     display: block;
     border: Mixed solid var(--border-color);
+    position: relative;
+    border:1px solid red;
+    overflow: hidden;
+} */
+
+.video-card-image {
+    width: 100%;
+    height: 279px !important;
+    position: relative;
+    overflow: hidden;
+    display: flex;
+    
 }
 
-.world-card-image img {
+.video-card-image img {
+    width: 100%;
+    height: 100% !important;
+    object-fit: cover;
+    cursor: pointer;
+}
+
+.video-card-image a {
+    display: block;
     width: 100%;
     height: 100%;
-    object-fit: cover;
-
+    position: relative;
+    text-decoration: none;
 }
 
-.world-card-content {
-    height: 260px;
-    padding: 15px 30px 20px;
+.video-card-youtube-icon {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    width: 60px;
+    height: 60px;
+    z-index: 1;
+}
+
+.video-card-youtube-icon img {
+    width: 100%;
+    height: 100%;
+    object-fit: contain;
+}
+
+
+.video-card-content {
+    height: 160px;
+    padding: 15px 30px;
     border: 1px solid var(--border-color);
     border-top: none;
-    display: flex;
-    flex-direction: column;
-    justify-content: space-between;
 }
 
-.world-card-date {
+.video-card-date {
     color: var(--text-lighter);
     font-size: 14px;
     margin-bottom: 12px;
@@ -68,7 +95,7 @@
 
 }
 
-.world-card-name {
+.video-card-name {
     width: 100%;
     display: flex;
     justify-content: space-between;
@@ -76,17 +103,16 @@
     margin-bottom: 40px;
 }
 
-.world-card-name h1 {
+.video-card-name h1 {
     font-size: 46px;
     font-weight: 600;
     line-height: 51.89px;
     letter-spacing: 0.01em;
     text-align: left;
     color: var(--text-color);
-
 }
 
-.world-card-title {
+.video-card-title {
     font-size: 20px;
     font-weight: bold;
     margin-bottom: 14px;
@@ -98,12 +124,12 @@
     color: var(--text-color);
 }
 
-.world-card-title:hover {
+.video-card-title:hover {
     color: var(--anchor-hover);
-    transition: all 0.5s;
+    transition: all 0.4s;
 }
 
-.world-card-description {
+.video-card-description {
     color: var(--text-color);
     font-size: 16px;
     line-height: 1.5;
@@ -120,7 +146,6 @@
     -webkit-line-clamp: 4;
     -webkit-box-orient: vertical;
     line-height: 1.5;
-    margin-bottom: 10px;
     max-height: calc(3em * 4);
     white-space: normal;
 
@@ -140,7 +165,7 @@
     z-index: 10;
 }
 
-.world-card-wrapper {
+.video-card-wrapper {
     position: relative;
     width: 100%;
     padding: 20px;
@@ -171,14 +196,14 @@
 
 .custom-prev i,
 .custom-next i {
+    width: 100%;
     display: flex;
-    justify-content: center;
     align-items: center;
-    color: var(--text-color)
+    justify-content: center;
 }
 
 @media (max-width: 1426px) and (min-width: 1080px) {
-    .world-card {
+    .video-card {
         max-width: 400px;
         width: 100%;
 
@@ -186,32 +211,32 @@
 }
 
 @media (max-width: 1080px) and (min-width: 800px) {
-    .world-card {
+    .video-card {
         max-width: 460px;
         width: 100%;
 
     }
 
-    .world-cards {
+    .video-cards {
         display: flex;
         gap: 10px;
     }
 }
 
 @media (max-width: 730px) and (min-width: 330px) {
-    .world-card {
+    .video-card {
         max-width: 700px;
         width: 100%;
 
     }
 
-    .world-cards {
+    .video-cards {
         display: flex;
         gap: 10px;
     }
 }
 
-.detailed-button-wrapper {
+.video-detailed-button-wrapper {
     width: 116px;
     height: 43px;
     position: absolute;
@@ -223,7 +248,7 @@
     justify-content: space-between;
 }
 
-.detailed-button {
+.video-detailed-button {
     width: 100%;
     padding: 12px 16px;
     border: 1px dashed var(--text-color);
@@ -246,14 +271,14 @@
 
 }
 
-.detailed-button:hover {
+.video-detailed-button:hover {
     background-color: var(--text-active);
     color: var(--primary-color);
     border: 1px solid transparent;
     transition: all 0.7s ease;
 }
 
-.detailed-arrow span {
+.video-detailed-arrow span {
     font-weight: bold;
     font-size: 24px;
     transition: margin-left 0.3s ease;
@@ -262,6 +287,6 @@
     justify-content: center;
 }
 
-.detailed-button:hover .arrow {
+.video-detailed-button:hover .arrow {
     margin-left: 5px;
 }

@@ -3,13 +3,11 @@
     margin: 0 auto;
     padding: 20px;
     background-color: transparent;
-    border-right: 1px solid var(--border-color);
 }
 
 .article-header {
     color: var(--text-color);
     margin-bottom: 50px;
-    font-family: Petrona;
     font-size: 46px;
     font-weight: 600;
     line-height: 51.89px;
@@ -55,7 +53,6 @@
 .article-title {
     color: var(--text-color);
     margin-bottom: 15px;
-    font-family: Petrona;
     font-size: 30px;
     font-weight: 500;
     line-height: 33.84px;
@@ -66,7 +63,6 @@
 
 .article-content {
     color: var(--text-color);
-    font-family: Petrona;
     font-size: 16px;
     font-weight: 300;
     line-height: 20px;

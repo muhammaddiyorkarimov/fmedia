@@ -10,8 +10,10 @@ import search from '../../src/images/icons/search.png'
 import globe from '../../src/images/icons/globe.png'
 import darkGlobe from '../../src/images/icons/dark globe.png'
 import arrowDown from '../../src/images/icons/arrowDown.png'
+import youtube_icon from "../../src/images/icons/youtube_icon.png";
 
 import rais from '../../src/images/images/rais.png'
+import notFound from '../../src/images/images/notFound.png'
 
 
 const images = {
@@ -26,8 +28,10 @@ const images = {
   globe,
   darkGlobe,
   arrowDown,
+  youtube_icon,
 
   rais,
+  notFound,
 };
 
 export default images;

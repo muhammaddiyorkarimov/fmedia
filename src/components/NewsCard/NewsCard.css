@@ -7,7 +7,6 @@
 }
 
 .news-card-wrapper h1 {
-    font-family: Petrona;
     font-size: 24px;
     font-weight: 800;
     line-height: 27.07px;
@@ -79,7 +78,6 @@
 }
 
 .news-card h3 {
-    font-family: Petrona;
     font-size: 20px;
     font-weight: 500;
     line-height: 22.56px;
@@ -88,11 +86,17 @@
     color: var(--text-color);
 }
 
+.news-card h3:hover {
+    color: var(--anchor-hover);
+    transition: all 0.4s;
+}
+
 @media (max-width:1045px) {
     .news-card-wrapper h1 {
         font-size: 20px;
     }
-    .news-card h3  {
-        font-size:18px;
+
+    .news-card h3 {
+        font-size: 18px;
     }
 }

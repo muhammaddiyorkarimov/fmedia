@@ -1,8 +1,7 @@
 .root-layout {
-    position: relative;
     display: flex;
     flex-direction: column;
-    justify-content: space-between;
+    min-height: 100vh;
 }
 
 main {
@@ -10,13 +9,21 @@ main {
 }
 
 header {
+    position: fixed;
+    top: 0;
     width: 100%;
+    z-index: 1000;
+    transition: transform 0.3s ease-in-out;
     display: flex;
     align-items: center;
     justify-content: center;
     flex-direction: column;
     background-color: var(--primary-color);
 }
+
+.header.hidden {
+    transform: translateY(-100%);
+  }
 
 header .header-top {
     width: 100%;
@@ -203,20 +210,20 @@ nav ul li a {
 
 
 /* footer */
+
 footer {
-    display: none !important;
     width: 100%;
     min-height: 180px;
-    position: absolute !important;
-    bottom: 0 !important;
     display: flex;
     flex-direction: column;
     align-items: center;
     justify-content: center;
     border-top: 1px solid var(--border-color);
-    padding: 20px 20px 0 20px;
+    padding: 20px;
     background-color: var(--primary-color);
 }
+
+
 
 footer .container .items {
     width: 100%;
@@ -292,7 +299,7 @@ footer .bottom a {
     height: 100vh;
     width: 0;
     background-color: var(--background);
-    z-index: 100;
+    z-index: 10001;
     flex-direction: column;
     gap: 30px;
     border-right: 1px solid var(--border-color);

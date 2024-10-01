@@ -1,4 +1,6 @@
-import { useState } from 'react';
+import React from 'react';
+import { useEffect, useState } from 'react';
+import api from '../services/api'
 import { NavLink, Outlet } from 'react-router-dom';
 import './rootLayout.css';
 import images from './../images/index';
@@ -6,6 +8,7 @@ import { useTranslation } from 'react-i18next';
 import SearchModal from '../components/searchModal/SearchModal';
 import useFetch from './../hooks/useFetch';
 import LandingService from '../services/landing/landing';
+import ScrollToTopButton from '../components/ScrollToTopButton/ScrollToTopButton';
 
 function RootLayout() {
   const { t, i18n } = useTranslation();
@@ -14,15 +17,28 @@ function RootLayout() {
   const [isDarkMode, setIsDarkMode] = useState(false);
   const [isSearchOpen, setIsSearchOpen] = useState(false);
   const [isOpen, setIsOpen] = useState(false);
+  const [isHeaderVisible, setIsHeaderVisible] = useState(true);
+  const [prevScrollY, setPrevScrollY] = useState(0);
 
   const { data, loading, error } = useFetch(LandingService.getNavbar)
-  console.log(data.results)
 
-
-  const changeLanguage = (lang) => {
+const changeLanguage = async (lang) => {
+  try {
     i18n.changeLanguage(lang);
     setActiveDropdown(false);
-  };
+
+    const response = await api.get(`/${lang}`);
+
+    if (response.status === 200) {
+      console.log('Language updated on backend');
+    } else {
+      console.error('Failed to update language on backend');
+    }
+  } catch (error) {
+    console.error('Error updating language:', error);
+  }
+};
+
 
   const toggleDropdown = () => {
     setActiveDropdown(!activeDropdown);
@@ -41,17 +57,37 @@ function RootLayout() {
     setIsOpen((prev) => !prev);
   }
 
+  // const navItems = data?.results?.map((item) => ({
+  //   path: item.path,
+  //   label: t(item.title),
+  // })) || [];
   const navItems = [
-    { path: '/', label: t('home') },
-    { path: '/uzbekistan', label: t('uzbekistan') },
-    { path: '/jaxon', label: t('jaxon') },
-    { path: '/iqtisodiyot', label: t('iqtisodiyot') },
-    { path: '/jamiyat', label: t('jamiyat') },
-    { path: '/sport', label: t('sport') },
-    { path: '/audio', label: t('audio') },
-    { path: '/texnologiya', label: t('texnologiya') }
+    { path: "/", label: t("home"), categoryId: null },
+    { path: "/uzbekistan", label: t("uzbekistan"), categoryId: 1 },
+    { path: "/world-news", label: t("jaxon"), categoryId: 2 },
+    { path: "/iqtisodiyot", label: t("iqtisodiyot"), categoryId: 3 },
+    { path: "/jamiyat", label: t("jamiyat"), categoryId: 4 },
+    { path: "/sport", label: t("sport"), categoryId: 5 },
+    { path: "/audio", label: t("audio"), categoryId: 6 },
+    { path: "/texnologiya", label: t("texnologiya"), categoryId: 7 },
   ];
-  
+
+  useEffect(() => {
+    const handleScroll = () => {
+      const currentScrollY = window.scrollY;
+      if (currentScrollY > prevScrollY && currentScrollY > 100) {
+        setIsHeaderVisible(false);
+      } else {
+        setIsHeaderVisible(true);
+      }
+      setPrevScrollY(currentScrollY);
+    };
+
+    window.addEventListener('scroll', handleScroll);
+
+    return () => window.removeEventListener('scroll', handleScroll);
+  }, [prevScrollY]);
+
 
   return (
     <div className="root-layout">
@@ -64,12 +100,24 @@ function RootLayout() {
         </div>
         <nav>
           <ul>
+            <li
+              className={activeIndex === -2 ? 'active' : ''}
+              onClick={() => setActiveIndex(-2)}
+            >
+              <NavLink to="/">{t('home')}</NavLink>
+            </li>
+
             {navItems.map((item, index) => (
-              <li key={index} className={activeIndex === index ? 'active' : ''} onClick={() => setActiveIndex(index)}>
-                <NavLink onClick={() => setIsOpen(false)} to={item.path}>{item.label}</NavLink>
+              <li
+                key={index}
+                className={activeIndex === index ? 'active' : ''}
+                onClick={() => setActiveIndex(index)}
+              >
+                <NavLink to={item.path}>{item.label}</NavLink>
               </li>
             ))}
           </ul>
+
         </nav>
         <div className="language">
           <div onClick={toggleDropdown} className="language-selector">
@@ -78,7 +126,8 @@ function RootLayout() {
             </span>
             <i className="fa-solid fa-chevron-down"></i>
             <div className={`dropdown-menu ${activeDropdown ? 'active' : ''}`}>
-              <span onClick={() => changeLanguage('uz')}>{t('Uzbek')}</span>
+              <span onClick={() => changeLanguage('uz-latn')}>{t('Uzbek')}</span>
+              <span onClick={() => changeLanguage('uz-kril')}>{t('Uzbek')}</span>
               <span onClick={() => changeLanguage('en')}>{t('English')}</span>
               <span onClick={() => changeLanguage('ru')}>{t('Russian')}</span>
             </div>
@@ -90,7 +139,7 @@ function RootLayout() {
           </div>
         </div>
       </div>
-      <header>
+      <header className={`header ${isHeaderVisible ? '' : 'hidden'}`}>
         <div className="header-top">
           <div className="container">
             <div className="logo">
@@ -107,7 +156,8 @@ function RootLayout() {
                 </span>
                 <i className="fa-solid fa-chevron-down"></i>
                 <div className={`dropdown-menu ${activeDropdown ? 'active' : ''}`}>
-                  <span onClick={() => changeLanguage('uz')}>{t('Uzbek')}</span>
+                  <span onClick={() => changeLanguage('uz-latn')}>{t('Uzbek')}</span>
+                  <span onClick={() => changeLanguage('latn')}>{t('Uzbek')}</span>
                   <span onClick={() => changeLanguage('en')}>{t('English')}</span>
                   <span onClick={() => changeLanguage('ru')}>{t('Russian')}</span>
                 </div>
@@ -129,12 +179,24 @@ function RootLayout() {
             </div>
             <nav>
               <ul>
+                <li
+                  className={activeIndex === -1 ? 'active' : ''}
+                  onClick={() => setActiveIndex(-1)}
+                >
+                  <NavLink to="/">{t('home')}</NavLink>
+                </li>
+
                 {navItems.map((item, index) => (
-                  <li key={index} className={activeIndex === index ? 'active' : ''} onClick={() => setActiveIndex(index)}>
+                  <li
+                    key={index}
+                    className={activeIndex === index ? 'active' : ''}
+                    onClick={() => setActiveIndex(index)}
+                  >
                     <NavLink to={item.path}>{item.label}</NavLink>
                   </li>
                 ))}
               </ul>
+
             </nav>
 
             <div className='search'>
@@ -185,6 +247,7 @@ function RootLayout() {
         </div>
       </footer>
 
+      <ScrollToTopButton/>
       <SearchModal isOpen={isSearchOpen} onClose={toggleSearch} />
     </div>
   );
