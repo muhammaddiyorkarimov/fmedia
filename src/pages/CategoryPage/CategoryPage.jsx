@@ -4,6 +4,7 @@ import useFetch from "../../hooks/useFetch";
 import LandingService from "../../services/landing/landingService";
 import CategoryCard from "../../components/CategoryCard/CategoryCard";
 import "./CategoryPage.css";
+import SkeletonContent from "../../components/SkeletonContent/SkeletonContent";
 
 function CategoryPage() {
   const [categoryData, setCategoryData] = useState([]);
@@ -13,7 +14,8 @@ function CategoryPage() {
     data: worldData,
     loading: worldDataLoading,
     error: worldDataError,
-  } = useFetch(LandingService.getAllArticles, false);
+  } = useFetch(LandingService.getAllArticles);
+  console.log(worldDataLoading)
 
   useEffect(() => {
     const loadCategory = async () => {
@@ -38,21 +40,17 @@ function CategoryPage() {
 
   return (
     <div className="category_wrapper">
-      {filteredCategory ? (
-        <h1>{filteredCategory.title}</h1>
-      ) : (
-        <p>Kategoriya topilmadi</p>
-      )}
-      {worldDataLoading && <p>Maqolalar yuklanmoqda...</p>}
+      {worldDataLoading && <p>{<SkeletonContent/>}</p>}
       {worldDataError && (
         <p>Maqolalarni yuklashda xatolik: {worldDataError.message}</p>
       )}
 
       {!worldDataLoading && !worldDataError && filteredCategory && (
         <CategoryCard
+          loading={worldDataLoading}
           key={filteredCategory.id}
           category={filteredCategory}
-          data={{ results: filteredArticles }} // Filtirlangan maqolalarni uzatish
+          data={{ results: filteredArticles }}
         />
       )}
 

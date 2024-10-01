@@ -1,8 +1,9 @@
 import React, { useEffect, useState } from "react";
 import "./CategoryCard.css";
 import { Link } from "react-router-dom";
+import SkeletonContent from './../SkeletonContent/SkeletonContent';
 
-const CategoryCard = ({ data, category }) => {
+const CategoryCard = ({ data, category, loading }) => {
   const [descriptions, setDescriptions] = useState({});
 
   const isHeadlineLong = (headline) => {
@@ -50,6 +51,7 @@ const CategoryCard = ({ data, category }) => {
     return `${day} ${month} ${year}`;
   };
 
+
   return (
     <div className="category-card-wrapper">
       <div className="category-card-name">
@@ -68,7 +70,7 @@ const CategoryCard = ({ data, category }) => {
                   {formDate(item.created_at)}
                 </p>
                 <Link to={`/news/${item.id}`}>
-                  <h2 className="category-card-title">{item.intro}</h2>
+                  <Link to={`/news/${item.id}?type=world`} className="category-card-title">{item.intro}</Link>
                   {!isHeadlineLong(item.headline) && (
                     <p className="category-card-description">
                       {descriptions[item.id]}
