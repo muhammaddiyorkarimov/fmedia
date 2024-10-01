@@ -143,6 +143,10 @@ nav ul li {
     padding: 15px 0;
 }
 
+nav ul li {
+    text-transform: capitalize;
+}
+
 nav ul li:hover a {
     color: var(--text-active);
 }

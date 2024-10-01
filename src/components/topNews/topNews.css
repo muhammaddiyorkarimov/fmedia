@@ -288,6 +288,10 @@ aside {
     }
 
     .main-news-wrapper .bottom-news .news-info {
+        margin-top: 0px;
+    }
+
+    .main-news-wrapper .bottom-news .news-info {
         border: none;
     }
 

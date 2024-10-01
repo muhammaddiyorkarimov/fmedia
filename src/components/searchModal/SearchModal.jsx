@@ -69,7 +69,7 @@ const SearchModal = ({ isOpen, onClose }) => {
                   articles.map((result, index) => (
                     <li key={index}>
                       <span>{result.category}</span>
-                      <Link to={`/article/${result.id}`}>{result.title}</Link>
+                      <Link onClick={onClose} to={`/news/${result.id}?type=world`}>{result.title}</Link>
                     </li>
                   ))
                 ) : (
