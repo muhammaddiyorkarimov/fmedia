@@ -29,7 +29,7 @@ function TopNews() {
                                             <img src={news.image || 'default_image_path.jpg'} alt={news.title} />
                                         </div>
                                         <div className='news-info'>
-                                            <Link to={`/news/${news.id}`}>{news.title}</Link>
+                                            <Link to={`/news/${news.id}?type=world`}>{news.title}</Link>
                                             <p className='description'>
                                                 {news.intro.split(' ').slice(0, 50).join(' ')}...
                                             </p>
@@ -50,7 +50,7 @@ function TopNews() {
                                             <p>{news.category}</p>
                                             <span>{news.date}</span>
                                         </div> */}
-                                        <Link to={`/news/${news.id}`}>{news.title.split(' ').slice(0, 10).join(' ')}</Link>
+                                        <Link to={`/news/${news.id}?type=world`}>{news.title.split(' ').slice(0, 10).join(' ')}</Link>
                                         <p className='description'>
                                             {news.intro.split(' ').slice(0, 50).join(' ')}...
                                         </p>
@@ -72,7 +72,7 @@ function TopNews() {
                                         <p>{news.category}</p>
                                         <span>{news.date}</span>
                                     </div> */}
-                                    <Link to={`/news/${news.id}`}>{news.title}</Link>
+                                    <Link to={`/news/${news.id}?type=world`}>{news.title}</Link>
                                 </div>
                             </div>
                         ))}
