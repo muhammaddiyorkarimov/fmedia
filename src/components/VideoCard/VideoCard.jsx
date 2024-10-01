@@ -54,7 +54,6 @@ const VideoCard = ({ data, category, loading }) => {
     setSelectedVideoUrl(null);
   };
 
-  console.log(data);
 
   const formDate = (dateString) => {
     const date = new Date(dateString);
@@ -101,114 +100,117 @@ const VideoCard = ({ data, category, loading }) => {
 
   return (
     <div className="video-card-wrapper">
-      <div className="container">
-        <div className="video-card-name">
-          <h1>Videos</h1>
-          <div className="swiper-btns">
-            <div ref={prevRef} className="custom-prev">
-              <i className="fa-solid fa-arrow-left-long"></i>
-            </div>
-            <div ref={nextRef} className="custom-next">
-              <i className="fa-solid fa-arrow-right-long"></i>
-            </div>
+      <div className="video-card-name">
+        <h1>Videos</h1>
+        <div className="swiper-btns">
+          <div ref={prevRef} className="custom-prev">
+            <i className="fa-solid fa-arrow-left-long"></i>
+          </div>
+          <div ref={nextRef} className="custom-next">
+            <i className="fa-solid fa-arrow-right-long"></i>
           </div>
         </div>
-
-        {loading && <SkeletonContent />}
-
-        {!loading && Array.isArray(data?.results) && data.results.length > 0 && (
-          <Swiper
-            spaceBetween={20}
-            slidesPerView={4}
-            autoplay={{ delay: 50000, disableOnInteraction: false }}
-            loop={true}
-            navigation={{
-              prevEl: prevRef.current,
-              nextEl: nextRef.current,
-            }}
-            pagination={false}
-            modules={[Navigation, Autoplay]}
-            breakpoints={{
-              320: {
-                slidesPerView: 1,
-                spaceBetween: 10,
-              },
-              730: {
-                slidesPerView: 2,
-                spaceBetween: 15,
-              },
-              1078: {
-                slidesPerView: 3,
-                spaceBetween: 20,
-              },
-              1425: {
-                slidesPerView: 4,
-                spaceBetween: 30,
-              },
-            }}
-            onSwiper={(swiper) => {
-              setTimeout(() => {
-                swiper.params.navigation.prevEl = prevRef.current;
-                swiper.params.navigation.nextEl = nextRef.current;
-                swiper.navigation.destroy();
-                swiper.navigation.init();
-                swiper.navigation.update();
-              });
-            }}
-          >
-            {data?.results.map((item) => {
-              const videoThumbnail = getYouTubeThumbnail(item.url);
-              const cover = item.cover || videoThumbnail;
-
-              return (
-                <SwiperSlide key={item.id}>
-                  <div className="video-card">
-                    <div
-                    onClick={() => handleVideoClick(item.url, item.title, item.intro)}
-                      className="video-card-image"
-                      style={{ background: !cover ? "black" : "none" }}
-                    >
-                        {cover ? (
-                          <img src={cover} alt={item.title} />
-                        ) : (
-                          <div
-                            style={{
-                              width: "100%",
-                              height: "100%",
-                              background: "black",
-                            }}
-                          />
-                        )}
-                        <div className="video-card-youtube-icon">
-                          <img src={images.youtube_icon} alt="youtube icon" />
-                        </div>
-                    </div>
-
-                    <div className="video-card-content">
-                      <p className="video-card-date">
-                        {formDate(item.created_at)}
-                      </p>
-                      <Link to={`/news/${item.id}`}>
-                        <h2 className="video-card-title">
-                          {truncateTitle(item.title)}
-                        </h2>
-                      </Link>
-                    </div>
-                  </div>
-                </SwiperSlide>
-              );
-            })}
-          </Swiper>
-        )}
-
-        <Modal
-          videoUrl={selectedVideoUrl}
-          isOpen={isModalOpen}
-          onClose={handleCloseModal}
-          title={selectedVideoTitle}
-          description={selectedVideoDescription}
-        />
       </div>
+
+      {loading && <SkeletonContent />}
+
+
+      {!loading && Array.isArray(data?.results) && data.results.length > 0 && (
+        <Swiper
+          spaceBetween={20}
+          slidesPerView={4}
+          autoplay={{ delay: 5000, disableOnInteraction: false }}
+          loop={true}
+          navigation={{
+            prevEl: prevRef.current,
+            nextEl: nextRef.current,
+          }}
+          pagination={false}
+          modules={[Navigation, Autoplay]}
+          breakpoints={{
+            320: {
+              slidesPerView: 1,
+              spaceBetween: 10,
+            },
+            730: {
+              slidesPerView: 2,
+              spaceBetween: 15,
+            },
+            1078: {
+              slidesPerView: 3,
+              spaceBetween: 20,
+            },
+            1425: {
+              slidesPerView: 4,
+              spaceBetween: 30,
+            },
+          }}
+          onSwiper={(swiper) => {
+            setTimeout(() => {
+              swiper.params.navigation.prevEl = prevRef.current;
+              swiper.params.navigation.nextEl = nextRef.current;
+              swiper.navigation.destroy();
+              swiper.navigation.init();
+              swiper.navigation.update();
+            });
+          }}
+        >
+          {data?.results.map((item) => {
+            const videoThumbnail = getYouTubeThumbnail(item.url);
+            const cover = item.cover || videoThumbnail;
+
+            return (
+              <SwiperSlide key={item.id}>
+                <div className="video-card">
+                  <div
+                    className="video-card-image"
+                    style={{ background: !cover ? "black" : "none" }}
+                  >
+                    <button
+                      onClick={() => handleVideoClick(item.url, item.title, item.intro)}
+                      style={{ border: "none", background: "none" }}
+                    >
+                      {cover ? (
+                        <img className="video-card-image-images" src={cover} alt={item.title} />
+                      ) : (
+                        <div
+                          style={{
+                            width: "100%",
+                            height: "100%",
+                            background: "black",
+                          }}
+                        />
+                      )}
+                      <div className="video-card-youtube-icon">
+                        <img width={30} height={30} src={images.youtube_icon} alt="youtube icon" />
+                      </div>
+                    </button>
+                  </div>
+
+                  <div className="video-card-content">
+                    <p className="video-card-date">
+                      {formDate(item.created_at)}
+                    </p>
+                    <Link to={`/news/${item.id}?type=video`}>
+                      <h2 className="video-card-title">
+                        {truncateTitle(item.title)}
+                      </h2>
+                    </Link>
+                  </div>
+                </div>
+              </SwiperSlide>
+            );
+          })}
+        </Swiper>
+      )}
+
+      <Modal
+        videoUrl={selectedVideoUrl}
+        isOpen={isModalOpen}
+        onClose={handleCloseModal}
+        title={selectedVideoTitle}
+        description={selectedVideoDescription}
+      />
     </div>
   );
 };

@@ -1,11 +1,11 @@
-import React from 'react';
-import { useEffect, useState } from "react";
+import React, { useEffect, useState } from "react";
 import "./NewsCard.css";
 import LandingService from "../../services/landing/landingService";
 import { Link } from "react-router-dom";
 
-const NewsCard = ({ data }) => {
+const NewsCard = ({ data, type }) => {
   const [categoryData, setCategoryData] = useState([]);
+  console.log(data, type);
 
   useEffect(() => {
     const loadCategory = async () => {
@@ -24,7 +24,6 @@ const NewsCard = ({ data }) => {
     return category ? category.title : "Unknown Category";
   };
 
-  // Format the date into "day month year" format
   const formDate = (dateString) => {
     const date = new Date(dateString);
     const day = date.getDate();
@@ -47,7 +46,6 @@ const NewsCard = ({ data }) => {
     return `${day} ${month} ${year}`;
   };
 
-  // Get the current date and the date 1 month ago
   const today = new Date();
   const oneMonthAgo = new Date();
   oneMonthAgo.setMonth(today.getMonth() - 1);
@@ -63,33 +61,32 @@ const NewsCard = ({ data }) => {
 
   return (
     <div className="news-card-wrapper">
-      <div className="container">
-        <h1>So'ngi yangiliklar</h1>
-        {randomSixNews?.map((newsItem, index) => (
-          <div key={index} className="new-card">
-            <img
-              src={
-                newsItem.image ||
-                "https://buffer.com/library/content/images/size/w1200/2023/10/free-images.jpg"
-              }
-              alt="news"
-            />
-            <div className="news-card-content">
-              <div className="news-card-tag-date">
-                <span className="news-card-tag">
-                  {newsItem.categories.length > 0
-                    ? getCategoryTitle(newsItem.categories[0])
-                    : "No Category"}
-                </span>
-                <p className="news-card-date">{formDate(newsItem.created_at)}</p>
-              </div>
-              <Link to={`/news/${newsItem.id}`}>
-                <h3>{newsItem.title}</h3>
-              </Link>
+      <h1>{type === "video" ? "So'ngi videolar" : "So'ngi yangiliklar"}</h1>{" "}
+      {/* Adjust title based on type */}
+      {randomSixNews?.map((newsItem, index) => (
+        <div key={index} className="news-card">
+          <img
+            src={
+              newsItem.image ||
+              "https://buffer.com/library/content/images/size/w1200/2023/10/free-images.jpg"
+            }
+            alt={type === "video" ? "video" : "news"} // Adjust alt text based on type
+          />
+          <div className="news-card-content">
+            <div className="news-card-tag-date">
+              <span className="news-card-tag">
+                {newsItem.categories && newsItem.categories.length > 0
+                  ? getCategoryTitle(newsItem.categories[0])
+                  : "No Category"}
+              </span>
+              <p className="news-card-date">{formDate(newsItem.created_at)}</p>
             </div>
+            <Link to={`/news/${newsItem.id}?type=${type}`}>
+              <h3>{newsItem.title}</h3>
+            </Link>
           </div>
-        ))}
-      </div>
+        </div>
+      ))}
     </div>
   );
 };

@@ -12,6 +12,15 @@ const LandingVideos = {
       throw error.response || new Error("Unknown error");
     }
   },
+
+  async getVideosId(id) {
+    try {
+      const response = await axios.get(`/videos/${id}/`); 
+      return response.data;
+    } catch (error) {
+      throw error.response || new Error("Unknown error");
+    }
+  },
 };
 
 export default LandingVideos;

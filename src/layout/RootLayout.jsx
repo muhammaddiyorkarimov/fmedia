@@ -1,14 +1,14 @@
-import React from 'react';
-import { useEffect, useState } from 'react';
-import api from '../services/api'
-import { NavLink, Outlet } from 'react-router-dom';
-import './rootLayout.css';
-import images from './../images/index';
-import { useTranslation } from 'react-i18next';
-import SearchModal from '../components/searchModal/SearchModal';
-import useFetch from './../hooks/useFetch';
-import LandingService from '../services/landing/landing';
-import ScrollToTopButton from '../components/ScrollToTopButton/ScrollToTopButton';
+import React from "react";
+import { useEffect, useState } from "react";
+import api from "../services/api";
+import { NavLink, Outlet } from "react-router-dom";
+import "./rootLayout.css";
+import images from "./../images/index";
+import { useTranslation } from "react-i18next";
+import SearchModal from "../components/searchModal/SearchModal";
+import useFetch from "./../hooks/useFetch";
+import LandingService from "../services/landing/landing";
+import ScrollToTopButton from "../components/ScrollToTopButton/ScrollToTopButton";
 
 function RootLayout() {
   const { t, i18n } = useTranslation();
@@ -20,25 +20,24 @@ function RootLayout() {
   const [isHeaderVisible, setIsHeaderVisible] = useState(true);
   const [prevScrollY, setPrevScrollY] = useState(0);
 
-  const { data, loading, error } = useFetch(LandingService.getNavbar)
+  const { data, loading, error } = useFetch(LandingService.getNavbar);
 
-const changeLanguage = async (lang) => {
-  try {
-    i18n.changeLanguage(lang);
-    setActiveDropdown(false);
+  const changeLanguage = async (lang) => {
+    try {
+      i18n.changeLanguage(lang);
+      setActiveDropdown(false);
 
-    const response = await api.get(`/${lang}`);
+      const response = await api.get(`/${lang}`);
 
-    if (response.status === 200) {
-      console.log('Language updated on backend');
-    } else {
-      console.error('Failed to update language on backend');
+      if (response.status === 200) {
+        console.log("Language updated on backend");
+      } else {
+        console.error("Failed to update language on backend");
+      }
+    } catch (error) {
+      console.error("Error updating language:", error);
     }
-  } catch (error) {
-    console.error('Error updating language:', error);
-  }
-};
-
+  };
 
   const toggleDropdown = () => {
     setActiveDropdown(!activeDropdown);
@@ -46,7 +45,7 @@ const changeLanguage = async (lang) => {
 
   const toggleTheme = () => {
     setIsDarkMode((prev) => !prev);
-    document.body.classList.toggle('dark-mode');
+    document.body.classList.toggle("dark-mode");
   };
 
   const toggleSearch = () => {
@@ -55,14 +54,14 @@ const changeLanguage = async (lang) => {
 
   const toggleOpenSidebar = () => {
     setIsOpen((prev) => !prev);
-  }
+  };
 
   // const navItems = data?.results?.map((item) => ({
   //   path: item.path,
   //   label: t(item.title),
   // })) || [];
   const navItems = [
-    { path: "/", label: t("home"), categoryId: null },
+    { path: "/", label: t("home") },
     { path: "/uzbekistan", label: t("uzbekistan"), categoryId: 1 },
     { path: "/world-news", label: t("jaxon"), categoryId: 2 },
     { path: "/iqtisodiyot", label: t("iqtisodiyot"), categoryId: 3 },
@@ -83,63 +82,72 @@ const changeLanguage = async (lang) => {
       setPrevScrollY(currentScrollY);
     };
 
-    window.addEventListener('scroll', handleScroll);
+    window.addEventListener("scroll", handleScroll);
 
-    return () => window.removeEventListener('scroll', handleScroll);
+    return () => window.removeEventListener("scroll", handleScroll);
   }, [prevScrollY]);
-
 
   return (
     <div className="root-layout">
-      <div className={`sidebar ${isOpen ? 'active' : ''}`}>
+      <div className={`sidebar ${isOpen ? "active" : ""}`}>
         <div className="logo">
-          <img width={150} src={!isDarkMode ? images.logoDark : images.logo2} alt="logo" />
+          <img
+            width={150}
+            src={!isDarkMode ? images.logoDark : images.logo2}
+            alt="logo"
+          />
           <div className="hamburger-menu">
-            <i onClick={toggleOpenSidebar} className='fa-solid fa-xmark'></i>
+            <i onClick={toggleOpenSidebar} className="fa-solid fa-xmark"></i>
           </div>
         </div>
         <nav>
           <ul>
-            <li
+            {/* <li
               className={activeIndex === -2 ? 'active' : ''}
               onClick={() => setActiveIndex(-2)}
             >
-              {/* <NavLink to="/">{t('home')}</NavLink> */}
-            </li>
+              <NavLink to="/">{t('home')}</NavLink>
+            </li> */}
 
-            {navItems.map((item, index) => (
+
+{navItems.map((item, index) => (
               <li
                 key={index}
-                className={activeIndex === index ? 'active' : ''}
+                className={activeIndex === index ? "active" : ""}
                 onClick={() => setActiveIndex(index)}
               >
                 <NavLink to={item.path}>{item.label}</NavLink>
               </li>
             ))}
           </ul>
-
         </nav>
         <div className="language">
           <div onClick={toggleDropdown} className="language-selector">
-            <span className="dropdown-toggle">
-              {t('language')}
-            </span>
+            <span className="dropdown-toggle">{t("language")}</span>
             <i className="fa-solid fa-chevron-down"></i>
-            <div className={`dropdown-menu ${activeDropdown ? 'active' : ''}`}>
-              <span onClick={() => changeLanguage('uz-latn')}>{t('Uzbek')}</span>
-              <span onClick={() => changeLanguage('uz-kril')}>{t('Uzbek')}</span>
-              <span onClick={() => changeLanguage('en')}>{t('English')}</span>
-              <span onClick={() => changeLanguage('ru')}>{t('Russian')}</span>
+            <div className={`dropdown-menu ${activeDropdown ? "active" : ""}`}>
+              <span onClick={() => changeLanguage("uz-latn")}>
+                {t("Uzbek")}
+              </span>
+              <span onClick={() => changeLanguage("uz-kril")}>
+                {t("Uzbek")}
+              </span>
+              <span onClick={() => changeLanguage("en")}>{t("English")}</span>
+              <span onClick={() => changeLanguage("ru")}>{t("Russian")}</span>
             </div>
           </div>
 
-
           <div className="dark-mode-toggle">
-            <img width={20} onClick={toggleTheme} src={isDarkMode ? images.moon : images.sun} alt="logo" />
+            <img
+              width={20}
+              onClick={toggleTheme}
+              src={isDarkMode ? images.moon : images.sun}
+              alt="logo"
+            />
           </div>
         </div>
       </div>
-      <header className={`header ${isHeaderVisible ? '' : 'hidden'}`}>
+      <header className={`header ${isHeaderVisible ? "" : "hidden"}`}>
         <div className="header-top">
           <div className="container">
             <div className="logo">
@@ -151,21 +159,32 @@ const changeLanguage = async (lang) => {
             <div className="language">
               <img src={images.globe} alt="globe icon" />
               <div onClick={toggleDropdown} className="language-selector">
-                <span className="dropdown-toggle">
-                  {t('language')}
-                </span>
+                <span className="dropdown-toggle">{t("language")}</span>
                 <i className="fa-solid fa-chevron-down"></i>
-                <div className={`dropdown-menu ${activeDropdown ? 'active' : ''}`}>
-                  <span onClick={() => changeLanguage('uz-latn')}>{t('Uzbek')}</span>
-                  <span onClick={() => changeLanguage('latn')}>{t('Uzbek')}</span>
-                  <span onClick={() => changeLanguage('en')}>{t('English')}</span>
-                  <span onClick={() => changeLanguage('ru')}>{t('Russian')}</span>
+                <div
+                  className={`dropdown-menu ${activeDropdown ? "active" : ""}`}
+                >
+                  <span onClick={() => changeLanguage("uz-latn")}>
+                    {t("Uzbek")}
+                  </span>
+                  <span onClick={() => changeLanguage("latn")}>
+                    {t("Uzbek")}
+                  </span>
+                  <span onClick={() => changeLanguage("en")}>
+                    {t("English")}
+                  </span>
+                  <span onClick={() => changeLanguage("ru")}>
+                    {t("Russian")}
+                  </span>
                 </div>
               </div>
 
               <div className="hamburger-menu">
-                <i className='fa-solid fa-magnifying-glass' onClick={toggleSearch}></i>
-                <i onClick={toggleOpenSidebar} className='fa-solid fa-bars'></i>
+                <i
+                  className="fa-solid fa-magnifying-glass"
+                  onClick={toggleSearch}
+                ></i>
+                <i onClick={toggleOpenSidebar} className="fa-solid fa-bars"></i>
               </div>
             </div>
           </div>
@@ -175,34 +194,43 @@ const changeLanguage = async (lang) => {
             <div className="dark-mode-toggle">
               <i
                 onClick={toggleTheme}
-                className={`fa-regular fa-${isDarkMode ? 'moon' : 'sun'}`}></i>
+                className={`fa-regular fa-${isDarkMode ? "moon" : "sun"}`}
+              ></i>
             </div>
             <nav>
               <ul>
-                <li
+                {/* <li
                   className={activeIndex === -1 ? 'active' : ''}
                   onClick={() => setActiveIndex(-1)}
                 >
-                  {/* <NavLink to="/">{t('home')}</NavLink> */}
-                </li>
+                  <NavLink to="/">{t('home')}</NavLink>
+                </li> */}
 
-                {navItems.map((item, index) => (
+
+{navItems.map((item, index) => (
                   <li
                     key={index}
-                    className={activeIndex === index ? 'active' : ''}
+                    className={activeIndex === index ? "active" : ""}
                     onClick={() => setActiveIndex(index)}
                   >
-                    <NavLink to={item.path}>{item.label}</NavLink>
+                    <NavLink
+                      onClick={() => setIsOpen(false)}
+                      to={
+                        item.path === "/" ? "/" : `/category/${item.categoryId}`
+                      }
+                    >
+                      {item.label}
+                    </NavLink>
                   </li>
                 ))}
               </ul>
-
             </nav>
 
-            <div className='search'>
+            <div className="search">
               <i
                 className="fa-solid fa-magnifying-glass"
-                onClick={toggleSearch}></i>
+                onClick={toggleSearch}
+              ></i>
             </div>
           </div>
         </div>
@@ -214,13 +242,16 @@ const changeLanguage = async (lang) => {
         <div className="container">
           <div className="items">
             <div className="item">
-              <img src={!isDarkMode ? images.logoDark : images.logo2} alt="logo" />
+              <img
+                src={!isDarkMode ? images.logoDark : images.logo2}
+                alt="logo"
+              />
               <p>Yangiliklarimiz xalq uchun</p>
               <div className="social-networks">
-                <i className='fab fa-instagram'></i>
-                <i className='fab fa-telegram'></i>
-                <i className='fab fa-facebook'></i>
-                <i className='fab fa-youtube'></i>
+                <i className="fab fa-instagram"></i>
+                <i className="fab fa-telegram"></i>
+                <i className="fab fa-facebook"></i>
+                <i className="fab fa-youtube"></i>
               </div>
             </div>
             <div className="item">
@@ -234,20 +265,28 @@ const changeLanguage = async (lang) => {
             <div className="item">
               <div className="title">Sayt xaqida</div>
               <ul>
-                <li>Veb sayt OAV sifatida 2018 yil 28 oktyabr kuni Uzbekistan
-                  Respublikasi Prezidenti Adminstratsiyasi xuzuridagi Axborot
-                  va ommaviy kommunikatsiyalar agentligidan 1089 raqam
-                  ro’yxatga olingan.</li>
+                <li>
+                  Veb sayt OAV sifatida 2018 yil 28 oktyabr kuni Uzbekistan
+                  Respublikasi Prezidenti Adminstratsiyasi xuzuridagi Axborot va
+                  ommaviy kommunikatsiyalar agentligidan 1089 raqam ro’yxatga
+                  olingan.
+                </li>
               </ul>
             </div>
           </div>
         </div>
         <div className="bottom">
-          <p>© created by <a target='_blank' href="https://fassco.uz">Fassco</a> company</p>
+          <p>
+            © created by{" "}
+            <a target="_blank" href="https://fassco.uz">
+              Fassco
+            </a>{" "}
+            company
+          </p>
         </div>
       </footer>
 
-      <ScrollToTopButton/>
+      <ScrollToTopButton />
       <SearchModal isOpen={isSearchOpen} onClose={toggleSearch} />
     </div>
   );

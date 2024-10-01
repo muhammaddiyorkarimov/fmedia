@@ -3,8 +3,7 @@
     flex-direction: column;
     max-width: 700px;
     width: 100%;
-    padding-top: 85px;
-    margin-top: 130px;
+    padding-top: 150px;
 }
 
 .news-card-wrapper h1 {
@@ -13,11 +12,11 @@
     line-height: 27.07px;
     letter-spacing: 0.01em;
     text-align: left;
-    padding: 10px 0;
+    padding: 10px 16px;
     color: var(--text-color);
 }
 
-.new-card {
+.news-card {
     display: flex;
     align-items: center;
     background-color: transparent;
@@ -27,7 +26,7 @@
     width: 100%;
 }
 
-.news-card-wrapper .new-card img {
+.news-card img {
     max-width: 210px;
     width: 100%;
     height: 140px;
@@ -78,7 +77,7 @@
     color: var(--text-color)
 }
 
-.new-card h3 {
+.news-card h3 {
     font-size: 20px;
     font-weight: 500;
     line-height: 22.56px;
@@ -87,7 +86,7 @@
     color: var(--text-color);
 }
 
-.new-card h3:hover {
+.news-card h3:hover {
     color: var(--anchor-hover);
     transition: all 0.4s;
 }

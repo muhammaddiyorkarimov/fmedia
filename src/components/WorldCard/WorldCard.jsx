@@ -9,7 +9,7 @@ import { Link, useNavigate } from "react-router-dom";
 import SkeletonContent from "../SkeletonContent/SkeletonContent";
 
 const WorldCard = ({ data, category }) => {
-  const [descriptions, setDescriptions] = useState({});  
+  const [descriptions, setDescriptions] = useState({});
 
   const navigate = useNavigate();
   const prevRef = useRef(null);
@@ -60,6 +60,9 @@ const WorldCard = ({ data, category }) => {
     return `${day} ${month} ${year}`;
   };
 
+  
+  
+
   return (
     <div className="world-card-wrapper">
       <div className="world-card-name">
@@ -78,7 +81,7 @@ const WorldCard = ({ data, category }) => {
         <Swiper
           spaceBetween={20}
           slidesPerView={4}
-          autoplay={{ delay: 50000, disableOnInteraction: false }}
+          autoplay={{ delay: 5000, disableOnInteraction: false }}
           loop={true}
           navigation={{ nextEl: nextRef.current, prevEl: prevRef.current }}
           modules={[Navigation, Autoplay]}
@@ -97,7 +100,7 @@ const WorldCard = ({ data, category }) => {
                 </div>
                 <div className="world-card-content">
                   <p className="world-card-date">{formDate(item.created_at)}</p>
-                  <Link to={`/news/${item.id}`}>
+                  <Link to={`/news/${item.id}?type=world`}>
                     <h2 className="world-card-title">{item.intro}</h2>
                     {!isHeadlineLong(item.headline) && (
                       <p className="world-card-description">

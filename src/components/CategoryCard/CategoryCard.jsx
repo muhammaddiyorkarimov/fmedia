@@ -1,13 +1,9 @@
 import React, { useEffect, useState } from "react";
 import "./CategoryCard.css";
-import { Link, useNavigate } from "react-router-dom";
-import SkeletonContent from "../SkeletonContent/SkeletonContent";
+import { Link } from "react-router-dom";
 
 const CategoryCard = ({ data, category }) => {
   const [descriptions, setDescriptions] = useState({});
-  const navigate = useNavigate();
-
-  console.log(data)
 
   const isHeadlineLong = (headline) => {
     const wordCount = (headline?.split(" ") || []).length;
@@ -57,7 +53,7 @@ const CategoryCard = ({ data, category }) => {
   return (
     <div className="category-card-wrapper">
       <div className="category-card-name">
-        <h1>{category.title}</h1>
+        <h1>{category.title}</h1> {/* Kategoriya nomi */}
       </div>
 
       {Array.isArray(data?.results) && data.results.length > 0 ? (
@@ -68,7 +64,9 @@ const CategoryCard = ({ data, category }) => {
                 <img src={item.image} alt={item.title} />
               </div>
               <div className="category-card-content">
-                <p className="category-card-date">{formDate(item.created_at)}</p>
+                <p className="category-card-date">
+                  {formDate(item.created_at)}
+                </p>
                 <Link to={`/news/${item.id}`}>
                   <h2 className="category-card-title">{item.intro}</h2>
                   {!isHeadlineLong(item.headline) && (
@@ -81,7 +79,9 @@ const CategoryCard = ({ data, category }) => {
             </div>
           ))}
         </div>
-      ) : null}
+      ) : (
+        <div>Bu kategoriyada maqolalar mavjud emas.</div>
+      )}
     </div>
   );
 };
