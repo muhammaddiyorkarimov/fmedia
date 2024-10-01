@@ -1,12 +1,8 @@
-import React, { useEffect, useState } from "react";
+import React from "react";
 import "./ArticleCard.css";
 import images from "../../images";
-import LandingService from "../../services/landing/landingService"; // Ensure LandingService is imported
 
-const ArticleCard = ({ data }) => {
-  const [categoryData, setCategoryData] = useState([]);
-
-  // Function to format date
+const ArticleCard = ({ data, type }) => {
   const formDate = (dateString) => {
     const date = new Date(dateString);
     const day = date.getDate();
@@ -29,40 +25,52 @@ const ArticleCard = ({ data }) => {
     return `${day} ${month} ${year}`;
   };
 
-  useEffect(() => {
-    const loadCategory = async () => {
-      try {
-        const results = await LandingService.getNavbar();
-        setCategoryData(results?.results || []);
-      } catch (error) {
-        console.error("Error fetching categories:", error);
-      }
-    };
-    loadCategory();
-  }, []);
+  const getYouTubeVideoId = (url) => {
+    const videoIdMatch = url?.match(
+      /(?:youtube\.com\/(?:[^/]+\/.+\/|(?:v|e(?:mbed)?)\/|.*[?&]v=)|youtu\.be\/)([^"&?\/\s]{11})/
+    );
+    return videoIdMatch ? videoIdMatch[1] : null;
+  };
 
-  const articleCategory = categoryData?.find(
-    (category) =>
-      Array.isArray(data?.categories) && data?.categories?.includes(category.id)
-  );
+  const videoId = getYouTubeVideoId(data?.url); // Extract videoId from the URL
+  const embedUrl = videoId ? `https://www.youtube.com/embed/${videoId}` : null;
+
+
+  const isVideo = type === "video";
+  const isWorld = type === "world";
 
   return (
     <div className="article-container">
-      <div className="container">
-        <h1 className="article-header">{articleCategory?.title}</h1>
+      <h1 className="article-header">{data?.title}</h1>
 
-        <div className="article-image-container">
-          <img
-            src={data?.image || images.placeholder}
-            alt="news"
-            className="article-image"
-          />
+      {isVideo && videoId ? (
+        <div className="video-wrapper">
+          <iframe
+            src={embedUrl} // Use the extracted video ID to form the embed URL
+            title={data?.title}
+            width="100%"
+            height="400"
+            frameBorder="0"
+            allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
+            allowFullScreen
+          ></iframe>
         </div>
-        <p className="article-date">{formDate(data?.created_at)}</p>
-        <h2 className="article-title">{data?.intro}</h2>
-
-        <p className="article-content">{data?.content}</p>
-      </div>
+      ) : isWorld ? (
+        <>
+          <div className="article-image-container">
+            <img
+              src={data?.image || images.placeholder}
+              alt="news"
+              className="article-image"
+            />
+          </div>
+          <p className="article-date">{formDate(data?.created_at)}</p>
+          <h2 className="article-title">{data?.intro}</h2>
+          <p className="article-content">{data?.content}</p>
+        </>
+      ) : (
+        <div>No data available.</div>
+      )}
     </div>
   );
 };

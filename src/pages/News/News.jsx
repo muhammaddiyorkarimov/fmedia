@@ -1,51 +1,60 @@
 import React, { useEffect, useState } from "react";
-import "./News.css";
-import NewsCard from "../../components/NewsCard/NewsCard";
+import { useParams, useLocation } from "react-router-dom";
+import SkeletonContent from "../../components/SkeletonContent/SkeletonContent";
+import LandingVideos from "../../services/landing/landingVideos";
 import ArticleCard from "../../components/DetailedNews/ArticleCard";
 import LandingService from "../../services/landing/landingService";
-import { useParams } from "react-router-dom";
-import SkeletonContent from "../../components/SkeletonContent/SkeletonContent";
-import useFetch from "../../hooks/useFetch";
+import NewsCard from "../../components/NewsCard/NewsCard";
+import "./News.css";
 
 function News() {
   const [articleDetailedData, setArticleDetailedData] = useState(null);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
+  const [newsData, setNewsData] = useState([]); // State for news data
   const { id } = useParams();
+  const location = useLocation();
 
+  const queryParams = new URLSearchParams(location.search);
+  const type = queryParams.get("type");
 
   useEffect(() => {
-    const loadArticles = async () => {
+    const loadData = async () => {
       try {
-        const results = await LandingService.getArticle(id);
+        let results;
+        if (type === "world") {
+          results = await LandingService.getArticle(id);
+          setNewsData(await LandingService.getAllArticles());
+        } else if (type === "video") {
+          results = await LandingVideos.getVideos();
+          const videoData = results?.results?.find((video) => video.id == id);
+          setArticleDetailedData(videoData);
+          setNewsData(await LandingVideos.getVideos());
+          return;
+        }
+        console.log("API response:", results);
         setArticleDetailedData(results);
       } catch (error) {
-        setError("Error fetching articles. Please try again later.");
-        console.error("Error fetching articles:", error);
+        setError("Error fetching data. Please try again later.");
+        console.error("Error fetching data:", error);
       } finally {
         setLoading(false);
       }
     };
 
-    loadArticles();
-  }, [id]);
-
-  const {
-    data: newsData,
-    loading: newsDataLoading,
-    error: newsDataError,
-  } = useFetch(LandingService.getAllArticles, false);
-  
+    loadData();
+  }, [id, type]);
+  console.log(newsData, type);
 
   return (
     <div className="news-wrapper">
-      {loading && <SkeletonContent margin="salom" />}
-      {error && <div className="error-message">{error}</div>}
-      {!loading && articleDetailedData && (
-        <ArticleCard data={articleDetailedData} />
-      )}
-      {!newsDataLoading && !newsDataError && <NewsCard data={newsData} />}
-      {newsDataError && <div className="error-message">{newsDataError}</div>}
+      <div className="container">
+        {loading && <SkeletonContent />}
+        {!loading && articleDetailedData && (
+          <ArticleCard data={articleDetailedData} type={type} />
+        )}
+        {!loading && newsData && <NewsCard data={newsData} type={type} />}
+      </div>
     </div>
   );
 }

@@ -1,5 +1,11 @@
 .news-wrapper {
     display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.news-wrapper .container {
+    display: flex;
     gap: 20px;
     /* margin: 50px auto; */
     max-width: 1440px;
