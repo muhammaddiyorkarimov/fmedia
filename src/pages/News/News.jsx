@@ -13,7 +13,6 @@ function News() {
   const [error, setError] = useState(null);
   const { id } = useParams();
 
-  console.log(articleDetailedData)
 
   useEffect(() => {
     const loadArticles = async () => {
@@ -40,7 +39,7 @@ function News() {
 
   return (
     <div className="news-wrapper">
-      {loading && <SkeletonContent />}
+      {loading && <SkeletonContent margin="salom" />}
       {error && <div className="error-message">{error}</div>}
       {!loading && articleDetailedData && (
         <ArticleCard data={articleDetailedData} />

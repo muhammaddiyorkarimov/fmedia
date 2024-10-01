@@ -3,7 +3,7 @@ import './SkeletonContent.css'; // Importing the CSS file
 
 const SkeletonContent = () => {
   return (
-    <div className="content-skeleton">
+    <div style={{marginTop: '150px'}} className="content-skeleton">
       <div className="skeleton-box skeleton-line-1"></div>
       <div className="skeleton-box skeleton-line-2"></div>
       <div className="skeleton-box skeleton-line-3"></div>
