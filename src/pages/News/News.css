@@ -12,6 +12,12 @@
     width: 100%;
 }
 
+@media (max-width: 1440px) {
+    .news-wrapper .container {
+        flex-direction: column !important;
+    }
+}
+
 @media (max-width: 990px) {
     .news-wrapper {
         flex-direction: column;

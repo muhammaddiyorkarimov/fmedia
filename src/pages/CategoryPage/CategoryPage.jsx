@@ -53,11 +53,6 @@ function CategoryPage() {
           data={{ results: filteredArticles }}
         />
       )}
-
-      {!filteredCategory && <p>ID {categoryId} uchun kategoriya topilmadi</p>}
-      {filteredCategory && filteredArticles?.length === 0 && (
-        <p></p>
-      )}
     </div>
   );
 }

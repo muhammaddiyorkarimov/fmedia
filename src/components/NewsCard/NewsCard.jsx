@@ -62,31 +62,32 @@ const NewsCard = ({ data, type }) => {
   return (
     <div className="news-card-wrapper">
       <h1>{type === "video" ? "So'ngi videolar" : "So'ngi yangiliklar"}</h1>{" "}
-      {/* Adjust title based on type */}
-      {randomSixNews?.map((newsItem, index) => (
-        <div key={index} className="news-card">
-          <img
-            src={
-              newsItem.image ||
-              "https://buffer.com/library/content/images/size/w1200/2023/10/free-images.jpg"
-            }
-            alt={type === "video" ? "video" : "news"} // Adjust alt text based on type
-          />
-          <div className="news-card-content">
-            <div className="news-card-tag-date">
-              <span className="news-card-tag">
-                {newsItem.categories && newsItem.categories.length > 0
-                  ? getCategoryTitle(newsItem.categories[0])
-                  : "No Category"}
-              </span>
-              <p className="news-card-date">{formDate(newsItem.created_at)}</p>
+      <div className="new-card-wrapper">
+        {randomSixNews?.map((newsItem, index) => (
+          <div key={index} className="news-card">
+            <img
+              src={
+                newsItem.image ||
+                "https://buffer.com/library/content/images/size/w1200/2023/10/free-images.jpg"
+              }
+              alt={type === "video" ? "video" : "news"} // Adjust alt text based on type
+            />
+            <div className="news-card-content">
+              <div className="news-card-tag-date">
+                <span className="news-card-tag">
+                  {newsItem.categories && newsItem.categories.length > 0
+                    ? getCategoryTitle(newsItem.categories[0])
+                    : "No Category"}
+                </span>
+                <p className="news-card-date">{formDate(newsItem.created_at)}</p>
+              </div>
+              <Link to={`/news/${newsItem.id}?type=${type}`}>
+                <h3>{newsItem.title}</h3>
+              </Link>
             </div>
-            <Link to={`/news/${newsItem.id}?type=${type}`}>
-              <h3>{newsItem.title}</h3>
-            </Link>
           </div>
-        </div>
-      ))}
+        ))}
+      </div>
     </div>
   );
 };

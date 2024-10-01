@@ -65,7 +65,7 @@ const ArticleCard = ({ data, type }) => {
             />
           </div>
           <p className="article-date">{formDate(data?.created_at)}</p>
-          <h2 className="article-title">{data?.intro}</h2>
+          <p className="article-title">{data?.intro}</p>
           <p className="article-content">{data?.content}</p>
         </>
       ) : (
