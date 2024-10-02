@@ -110,13 +110,20 @@ function RootLayout() {
             </li> */}
 
 
-{navItems.map((item, index) => (
+            {navItems.map((item, index) => (
               <li
                 key={index}
                 className={activeIndex === index ? "active" : ""}
                 onClick={() => setActiveIndex(index)}
               >
-                <NavLink to={item.path}>{item.label}</NavLink>
+                <NavLink
+                  onClick={() => setIsOpen(false)}
+                  to={
+                    item.path === "/" ? "/" : `/category/${item.categoryId}`
+                  }
+                >
+                  {item.label}
+                </NavLink>
               </li>
             ))}
           </ul>
@@ -207,7 +214,7 @@ function RootLayout() {
                 </li> */}
 
 
-{navItems.map((item, index) => (
+                {navItems.map((item, index) => (
                   <li
                     key={index}
                     className={activeIndex === index ? "active" : ""}
