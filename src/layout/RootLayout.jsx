@@ -53,8 +53,34 @@ function RootLayout() {
   };
 
   const toggleOpenSidebar = () => {
-    setIsOpen((prev) => !prev);
+    setIsOpen((prev) => {
+      if (!prev) {
+        document.body.style.overflow = "hidden";
+      } else {
+        document.body.style.overflow = "auto";
+      }
+      return !prev;
+    });
   };
+
+  useEffect(() => {
+    const handleBodyClick = (event) => {
+      if (!event.target.closest(".sidebar") && !event.target.closest(".hamburger-menu")) {
+        setIsOpen(false);
+        document.body.style.overflow = "auto";
+      }
+    };
+
+    if (isOpen) {
+      document.body.addEventListener("click", handleBodyClick);
+    } else {
+      document.body.removeEventListener("click", handleBodyClick);
+    }
+
+    return () => document.body.removeEventListener("click", handleBodyClick);
+  }, [isOpen]);
+
+
 
   // const navItems = data?.results?.map((item) => ({
   //   path: item.path,
@@ -97,7 +123,7 @@ function RootLayout() {
             alt="logo"
           />
           <div className="hamburger-menu">
-            <i onClick={toggleOpenSidebar} className="fa-solid fa-xmark"></i>
+            <i onClick={toggleOpenSidebar} className={`fa-solid ${isOpen ? 'fa-xmark' : 'fa-bars'}`}></i>
           </div>
         </div>
         <nav>
