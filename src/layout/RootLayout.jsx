@@ -143,15 +143,17 @@ function RootLayout() {
                 onClick={() => setActiveIndex(index)}
               >
                 <NavLink
-                  onClick={() => setIsOpen(false)}
-                  to={
-                    item.path === "/" ? "/" : `/category/${item.categoryId}`
-                  }
+                  onClick={() => {
+                    setIsOpen(false);
+                    document.body.style.overflow = "auto"; 
+                  }}
+                  to={item.path === "/" ? "/" : `/category/${item.categoryId}`}
                 >
                   {item.label}
                 </NavLink>
               </li>
             ))}
+
           </ul>
         </nav>
         <div className="language">
