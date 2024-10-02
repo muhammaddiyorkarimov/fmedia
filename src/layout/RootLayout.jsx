@@ -1,7 +1,7 @@
 import React from "react";
 import { useEffect, useState } from "react";
 import api from "../services/api";
-import { NavLink, Outlet } from "react-router-dom";
+import { Link, NavLink, Outlet } from "react-router-dom";
 import "./rootLayout.css";
 import images from "./../images/index";
 import { useTranslation } from "react-i18next";
@@ -13,12 +13,19 @@ import ScrollToTopButton from "../components/ScrollToTopButton/ScrollToTopButton
 function RootLayout() {
   const { t, i18n } = useTranslation();
   const [activeDropdown, setActiveDropdown] = useState(false);
-  const [activeIndex, setActiveIndex] = useState(0);
   const [isDarkMode, setIsDarkMode] = useState(false);
   const [isSearchOpen, setIsSearchOpen] = useState(false);
   const [isOpen, setIsOpen] = useState(false);
   const [isHeaderVisible, setIsHeaderVisible] = useState(true);
   const [prevScrollY, setPrevScrollY] = useState(0);
+  const [activeIndex, setActiveIndex] = useState(() => {
+    const savedIndex = localStorage.getItem('activeIndex');
+    return savedIndex !== null ? parseInt(savedIndex, 10) : 0;
+  });
+
+  useEffect(() => {
+    localStorage.setItem('activeIndex', activeIndex);
+  }, [activeIndex]);
 
   const { data, loading, error } = useFetch(LandingService.getNavbar);
 
@@ -81,21 +88,20 @@ function RootLayout() {
   }, [isOpen]);
 
 
-
-  // const navItems = data?.results?.map((item) => ({
-  //   path: item.path,
-  //   label: t(item.title),
-  // })) || [];
   const navItems = [
-    { path: "/", label: t("home") },
-    { path: "/uzbekistan", label: t("uzbekistan"), categoryId: 1 },
-    { path: "/world-news", label: t("jaxon"), categoryId: 2 },
-    { path: "/iqtisodiyot", label: t("iqtisodiyot"), categoryId: 3 },
-    { path: "/jamiyat", label: t("jamiyat"), categoryId: 4 },
-    { path: "/sport", label: t("sport"), categoryId: 5 },
-    { path: "/audio", label: t("audio"), categoryId: 6 },
-    { path: "/texnologiya", label: t("texnologiya"), categoryId: 7 },
+    {
+      path: "/",
+      label: t('home'),
+      categoryId: -2,
+    },
+    ...(data?.results?.map((item) => ({
+      path: item.path,
+      label: t(item.title),
+      categoryId: item.id,
+    })) || []),
   ];
+  
+
 
   useEffect(() => {
     const handleScroll = () => {
@@ -117,25 +123,19 @@ function RootLayout() {
     <div className="root-layout">
       <div className={`sidebar ${isOpen ? "active" : ""}`}>
         <div className="logo">
-          <img
-            width={150}
-            src={!isDarkMode ? images.logoDark : images.logo2}
-            alt="logo"
-          />
+          <NavLink to='/'>
+            <img
+              width={150}
+              src={!isDarkMode ? images.logoDark : images.logo2}
+              alt="logo"
+            />
+          </NavLink>
           <div className="hamburger-menu">
             <i onClick={toggleOpenSidebar} className={`fa-solid ${isOpen ? 'fa-xmark' : 'fa-bars'}`}></i>
           </div>
         </div>
         <nav>
           <ul>
-            {/* <li
-              className={activeIndex === -2 ? 'active' : ''}
-              onClick={() => setActiveIndex(-2)}
-            >
-              <NavLink to="/">{t('home')}</NavLink>
-            </li> */}
-
-
             {navItems.map((item, index) => (
               <li
                 key={index}
@@ -145,7 +145,7 @@ function RootLayout() {
                 <NavLink
                   onClick={() => {
                     setIsOpen(false);
-                    document.body.style.overflow = "auto"; 
+                    document.body.style.overflow = "auto";
                   }}
                   to={item.path === "/" ? "/" : `/category/${item.categoryId}`}
                 >
@@ -153,7 +153,6 @@ function RootLayout() {
                 </NavLink>
               </li>
             ))}
-
           </ul>
         </nav>
         <div className="language">
@@ -186,7 +185,12 @@ function RootLayout() {
         <div className="header-top">
           <div className="container">
             <div className="logo">
-              <img src={images.logo} alt="site's logo" />
+              <NavLink to='/'>
+                <img
+                  src={images.logo}
+                  alt="logo"
+                />
+              </NavLink>
             </div>
             <div className="logo-center">
               <p>Fergana Media.uz</p>
@@ -234,14 +238,6 @@ function RootLayout() {
             </div>
             <nav>
               <ul>
-                {/* <li
-                  className={activeIndex === -1 ? 'active' : ''}
-                  onClick={() => setActiveIndex(-1)}
-                >
-                  <NavLink to="/">{t('home')}</NavLink>
-                </li> */}
-
-
                 {navItems.map((item, index) => (
                   <li
                     key={index}
