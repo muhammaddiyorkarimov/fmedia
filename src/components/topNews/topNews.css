@@ -255,7 +255,7 @@ aside {
         gap: 20px;
     }
 
-    .news-card {
+    .main-news-wrapper .news-card {
         margin-bottom: 0 !important;
         padding: 0 !important;
         gap: 20px;

@@ -166,7 +166,7 @@ function RootLayout() {
             ></i>
           </div>
         </div>
-        <nav>
+        <nav className="nav-items">
           <ul>
             {navItems.map((item, index) => (
               <li
