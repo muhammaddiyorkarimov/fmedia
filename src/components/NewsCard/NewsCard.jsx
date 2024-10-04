@@ -2,8 +2,10 @@ import React, { useEffect, useState } from "react";
 import "./NewsCard.css";
 import LandingService from "../../services/landing/landingService";
 import { Link } from "react-router-dom";
+import { useTranslation } from "react-i18next";
 
 const NewsCard = ({ data, type }) => {
+  const { i18n } = useTranslation(); 
   const [categoryData, setCategoryData] = useState([]);
   console.log(data, type);
 
@@ -21,27 +23,14 @@ const NewsCard = ({ data, type }) => {
 
   const getCategoryTitle = (categoryId) => {
     const category = categoryData?.find((item) => item.id === categoryId);
-    return category ? category.title : "Unknown Category";
+    return category ? category : "Unknown Category";
   };
 
   const formDate = (dateString) => {
     const date = new Date(dateString);
     const day = date.getDate();
     const year = date.getFullYear();
-    const months = [
-      "yanvar",
-      "fevral",
-      "mart",
-      "aprel",
-      "may",
-      "iyun",
-      "iyul",
-      "avgust",
-      "sentabr",
-      "oktyabr",
-      "noyabr",
-      "dekabr",
-    ];
+    const months = i18n.t("months", { returnObjects: true });
     const month = months[date.getMonth()];
     return `${day} ${month} ${year}`;
   };
@@ -59,6 +48,21 @@ const NewsCard = ({ data, type }) => {
     ?.sort(() => Math.random() - 0.5)
     .slice(0, 6);
 
+    const getTitleByLanguage = (item) => {
+      switch (i18n.language) {
+        case "en":
+          return item?.title_en_us || item?.title;
+        case "uz-latn":
+          return item?.title_uz_Latn || item?.title;
+        case "ru":
+          return item?.title_ru || item?.title;
+        default:
+          return item?.title;
+      }
+    };
+  
+
+
   return (
     <div className="news-card-wrapper">
       <h1>{type === "video" ? "So'ngi videolar" : "So'ngi yangiliklar"}</h1>{" "}
@@ -70,19 +74,19 @@ const NewsCard = ({ data, type }) => {
                 newsItem.image ||
                 "https://buffer.com/library/content/images/size/w1200/2023/10/free-images.jpg"
               }
-              alt={type === "video" ? "video" : "news"} // Adjust alt text based on type
+              alt={type === "video" ? "video" : "news"} 
             />
             <div className="news-card-content">
               <div className="news-card-tag-date">
                 <span className="news-card-tag">
                   {newsItem.categories && newsItem.categories.length > 0
-                    ? getCategoryTitle(newsItem.categories[0])
+                    ? getTitleByLanguage(getCategoryTitle(newsItem.categories[0]))
                     : "No Category"}
                 </span>
                 <p className="news-card-date">{formDate(newsItem.created_at)}</p>
               </div>
               <Link to={`/news/${newsItem.id}?type=${type}`}>
-                <h3>{newsItem.title}</h3>
+                <h3>{getTitleByLanguage(newsItem)}</h3>
               </Link>
             </div>
           </div>

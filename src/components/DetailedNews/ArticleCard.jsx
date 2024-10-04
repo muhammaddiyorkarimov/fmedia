@@ -1,26 +1,15 @@
 import React from "react";
 import "./ArticleCard.css";
 import images from "../../images";
+import { useTranslation } from "react-i18next";
 
 const ArticleCard = ({ data, type }) => {
+  const { i18n } = useTranslation();
   const formDate = (dateString) => {
     const date = new Date(dateString);
     const day = date.getDate();
     const year = date.getFullYear();
-    const months = [
-      "yanvar",
-      "fevral",
-      "mart",
-      "aprel",
-      "may",
-      "iyun",
-      "iyul",
-      "avgust",
-      "sentabr",
-      "oktyabr",
-      "noyabr",
-      "dekabr",
-    ];
+    const months = i18n.t("months", { returnObjects: true });
     const month = months[date.getMonth()];
     return `${day} ${month} ${year}`;
   };
@@ -35,19 +24,31 @@ const ArticleCard = ({ data, type }) => {
   const videoId = getYouTubeVideoId(data?.url); // Extract videoId from the URL
   const embedUrl = videoId ? `https://www.youtube.com/embed/${videoId}` : null;
 
-
   const isVideo = type === "video";
   const isWorld = type === "world";
 
+  const getTitleByLanguage = (item) => {
+    switch (i18n.language) {
+      case "en":
+        return item?.title_en_us || item?.title;
+      case "uz-latn":
+        return item?.title_uz_Latn || item?.title;
+      case "ru":
+        return item?.title_ru || item?.title;
+      default:
+        return item?.title;
+    }
+  };
+
   return (
     <div className="article-container">
-      <h1 className="article-header">{data?.title}</h1>
+      <h1 className="article-header">{getTitleByLanguage(data)}</h1>
 
       {isVideo && videoId ? (
         <div className="video-wrapper">
           <iframe
-            src={embedUrl} // Use the extracted video ID to form the embed URL
-            title={data?.title}
+            src={embedUrl}
+            title={getTitleByLanguage(data)}
             width="100%"
             height="400"
             frameBorder="0"
@@ -64,12 +65,14 @@ const ArticleCard = ({ data, type }) => {
               className="article-image"
             />
           </div>
-          <p className="article-date">{formDate(data?.created_at)}</p>
-          <p className="article-title">{data?.intro}</p>
-          <p className="article-content">{data?.content}</p>
+          <p className="article-date">
+            {formDate(data?.created_at)}
+          </p>
+          <p className="article-title">{getTitleByLanguage(data)}</p>
+          <p className="article-content">{getTitleByLanguage(data)}</p>
         </>
       ) : (
-        <div>No data available.</div>
+        <div>{t("Ma'lumot mavjud emas")}</div>
       )}
     </div>
   );

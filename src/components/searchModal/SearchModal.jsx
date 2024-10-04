@@ -4,8 +4,10 @@ import './searchModal.css';
 import LandingService from '../../services/landing/landing';
 import useFetch from '../../hooks/useFetch';
 import { Link } from 'react-router-dom';
+import { useTranslation } from 'react-i18next';
 
 const SearchModal = ({ isOpen, onClose }) => {
+  const { i18n } = useTranslation(); 
   const [searchTerm, setSearchTerm] = useState('');
   const [articles, setArticles] = useState([]);
 
@@ -48,6 +50,21 @@ const SearchModal = ({ isOpen, onClose }) => {
     e.preventDefault();
   };
 
+  const getTitleByLanguage = (item) => {
+    switch (i18n.language) {
+      case "en":
+        return item?.title_en_us || item?.title;
+      case "uz-latn":
+        return item?.title_uz_Latn || item?.title;
+      case "ru":
+        return item?.title_ru || item?.title;
+      default:
+        return item?.title;
+    }
+  };
+
+
+
   return (
     <div className={`modal-backdrop ${isOpen ? 'active' : ''}`} onClick={onClose}>
       <div className={`modal-content ${isOpen ? 'open' : ''}`} onClick={(e) => e.stopPropagation()}>
@@ -68,8 +85,8 @@ const SearchModal = ({ isOpen, onClose }) => {
                 {articles.length > 0 ? (
                   articles.map((result, index) => (
                     <li key={index}>
-                      <span>{result.category}</span>
-                      <Link onClick={onClose} to={`/news/${result.id}?type=world`}>{result.title}</Link>
+                      <span>{getTitleByLanguage(result.category)}</span>
+                      <Link onClick={onClose} to={`/news/${result.id}?type=world`}>{getTitleByLanguage(result.title)}</Link>
                     </li>
                   ))
                 ) : (

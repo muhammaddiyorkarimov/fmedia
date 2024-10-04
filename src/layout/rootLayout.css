@@ -112,6 +112,7 @@ header .header-top .container {
 .header-main {
     width: 100%;
     border-top: 1px solid var(--border-color);
+    border-bottom: 1px solid var(--border-color);
     vertical-align: center;
     display: flex;
     justify-content: center;
@@ -128,9 +129,9 @@ nav {
     display: flex;
     align-items: center;
     justify-content: center;
-    margin: 0 auto;
-    width: 100%;
-    margin: 0 20px;
+    /* margin: 0 auto; */
+    /* width: 100%; */
+    /* margin: 0 20px; */
 }
 
 nav ul {
@@ -161,34 +162,49 @@ nav ul li.active a {
 
 nav ul li a {
     font-size: var(--primary-text-size);
-    color: var(--text-color);
+    color: white;
     text-decoration: none;
 }
 
+.header-main {
+    background-color: #121212;
+    border-top: none;
+}
+
+.header-main .container {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+}
+
+.header-right-items {
+    display: flex;
+    gap: 20px;
+}
 
 .header-main .search {
     display: flex;
     align-items: center;
     justify-content: center;
     height: inherit;
-    width: 30px;
-    color: var(--text-color);
+    /* width: 30px; */
+    color: white;
     font-size: var(--primary-text-size);
-    border-left: 1px solid var(--border-color);
-    padding: 16px;
-    padding-left: 33px;
+    /* border-left: 1px solid var(--border-color); */
+    /* padding: 16px; */
+    /* padding-left: 33px; */
 }
 
 .dark-mode-toggle i {
     width: 30px;
-    color: var(--text-color);
+    color: white;
     font-size: var(--primary-text-size);
     display: flex;
     align-items: center;
     justify-content: center;
-    border-right: 1px solid var(--border-color);
-    padding: 16px;
-    padding-right: 33px;
+    /* border-right: 1px solid var(--border-color); */
+    /* padding: 16px; */
+    /* padding-right: 33px; */
 }
 
 .fa-moon {
@@ -209,9 +225,7 @@ nav ul li a {
 .hamburger-menu i {
     font-size: 20px !important;
     color: #fff !important;
-
 }
-
 
 /* footer */
 

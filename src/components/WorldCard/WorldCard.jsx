@@ -7,8 +7,10 @@ import "swiper/css/pagination";
 import { Navigation, Autoplay } from "swiper/modules";
 import { Link, useNavigate } from "react-router-dom";
 import SkeletonContent from "../SkeletonContent/SkeletonContent";
+import { useTranslation } from "react-i18next";
 
 const WorldCard = ({ data, category }) => {
+  const { t, i18n } = useTranslation();
   const [descriptions, setDescriptions] = useState({});
 
   const navigate = useNavigate();
@@ -42,31 +44,29 @@ const WorldCard = ({ data, category }) => {
     const date = new Date(dateString);
     const day = date.getDate();
     const year = date.getFullYear();
-    const months = [
-      "yanvar",
-      "fevral",
-      "mart",
-      "aprel",
-      "may",
-      "iyun",
-      "iyul",
-      "avgust",
-      "sentabr",
-      "oktyabr",
-      "noyabr",
-      "dekabr",
-    ];
+    const months = i18n.t("months", { returnObjects: true });
     const month = months[date.getMonth()];
     return `${day} ${month} ${year}`;
   };
 
-  
-  
+  const getTitleByLanguage = (item) => {
+    switch (i18n.language) {
+      case "en":
+        return item?.title_en_us || item?.title;
+      case "uz-latn":
+        return item?.title_uz_Latn || item?.title;
+      case "ru":
+        return item?.title_ru || item?.title;
+      default:
+        return item?.title;
+    }
+  };
+  console.log(data);
 
   return (
     <div className="world-card-wrapper">
       <div className="world-card-name">
-        <h1>{category.title}</h1>
+        <h1>{t(getTitleByLanguage(category))}</h1>
         <div className="swiper-btns">
           <div ref={prevRef} className="custom-prev">
             <i className="fa-solid fa-arrow-left-long"></i>
@@ -76,6 +76,7 @@ const WorldCard = ({ data, category }) => {
           </div>
         </div>
       </div>
+
 
       {Array.isArray(data?.results) && data.results.length > 0 ? (
         <Swiper
@@ -101,11 +102,13 @@ const WorldCard = ({ data, category }) => {
                 <div className="world-card-content">
                   <p className="world-card-date">{formDate(item.created_at)}</p>
                   <Link to={`/news/${item.id}?type=world`}>
-                    <h2 className="world-card-title">{item.intro}</h2>
+                    <h2 className="world-card-title">
+                      {getTitleByLanguage(item)}
+                    </h2>
                     {!isHeadlineLong(item.headline) && (
                       <p className="world-card-description">
                         {" "}
-                        {descriptions[item.id]}
+                        {getTitleByLanguage(descriptions[item.id])}
                       </p>
                     )}
                   </Link>

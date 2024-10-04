@@ -11,6 +11,7 @@ import LandingService from "../services/landing/landing";
 import ScrollToTopButton from "../components/ScrollToTopButton/ScrollToTopButton";
 
 function RootLayout() {
+  const [categories, setCategories] = useState([]);
   const { t, i18n } = useTranslation();
   const [activeDropdown, setActiveDropdown] = useState(false);
   const [isDarkMode, setIsDarkMode] = useState(false);
@@ -19,32 +20,46 @@ function RootLayout() {
   const [isHeaderVisible, setIsHeaderVisible] = useState(true);
   const [prevScrollY, setPrevScrollY] = useState(0);
   const [activeIndex, setActiveIndex] = useState(() => {
-    const savedIndex = localStorage.getItem('activeIndex');
+    const savedIndex = localStorage.getItem("activeIndex");
     return savedIndex !== null ? parseInt(savedIndex, 10) : 0;
   });
 
   useEffect(() => {
-    localStorage.setItem('activeIndex', activeIndex);
+    localStorage.setItem("activeIndex", activeIndex);
   }, [activeIndex]);
 
   const { data, loading, error } = useFetch(LandingService.getNavbar);
+  console.log(data);
 
   const changeLanguage = async (lang) => {
     try {
-      i18n.changeLanguage(lang);
+      await i18n.changeLanguage(lang.toLowerCase());
       setActiveDropdown(false);
-
-      const response = await api.get(`/${lang}`);
-
-      if (response.status === 200) {
-        console.log("Language updated on backend");
-      } else {
-        console.error("Failed to update language on backend");
-      }
+      // await fetchCategories();
     } catch (error) {
       console.error("Error updating language:", error);
     }
   };
+  useEffect(() => {
+    const fetchCategories = async () => {
+      try {
+        const response = await api.get(`/${i18n.language.toLowerCase()}/`);
+        console.log(`/${i18n.language.toLowerCase()}/`);
+
+        if (response.status === 200) {
+          setCategories(response.data);
+          console.log("Categories loaded:", response.data);
+        } else {
+          console.error("Failed to load categories");
+        }
+      } catch (error) {
+        console.error("Error fetching categories:", error);
+      }
+    };
+    fetchCategories();
+  }, [i18n.language]);
+
+
 
   const toggleDropdown = () => {
     setActiveDropdown(!activeDropdown);
@@ -72,7 +87,10 @@ function RootLayout() {
 
   useEffect(() => {
     const handleBodyClick = (event) => {
-      if (!event.target.closest(".sidebar") && !event.target.closest(".hamburger-menu")) {
+      if (
+        !event.target.closest(".sidebar") &&
+        !event.target.closest(".hamburger-menu")
+      ) {
         setIsOpen(false);
         document.body.style.overflow = "auto";
       }
@@ -87,20 +105,31 @@ function RootLayout() {
     return () => document.body.removeEventListener("click", handleBodyClick);
   }, [isOpen]);
 
+  const getTitleByLanguage = (item) => {
+    switch (i18n.language) {
+      case "en":
+        return item.title_en_us || item.title;
+      case "uz-latn":
+        return item.title_uz_Latn || item.title;
+      case "ru":
+        return item.title_ru || item.title;
+      default:
+        return item.title;
+    }
+  };
 
   const navItems = [
     {
       path: "/",
-      label: t('home'),
+      label: t("home"),
       categoryId: -2,
     },
     ...(data?.results?.map((item) => ({
       path: item.path,
-      label: t(item.title),
+      label: getTitleByLanguage(item),
       categoryId: item.id,
     })) || []),
   ];
-  
 
 
   useEffect(() => {
@@ -123,7 +152,7 @@ function RootLayout() {
     <div className="root-layout">
       <div className={`sidebar ${isOpen ? "active" : ""}`}>
         <div className="logo">
-          <NavLink to='/'>
+          <NavLink to="/">
             <img
               width={150}
               src={!isDarkMode ? images.logoDark : images.logo2}
@@ -131,7 +160,10 @@ function RootLayout() {
             />
           </NavLink>
           <div className="hamburger-menu">
-            <i onClick={toggleOpenSidebar} className={`fa-solid ${isOpen ? 'fa-xmark' : 'fa-bars'}`}></i>
+            <i
+              onClick={toggleOpenSidebar}
+              className={`fa-solid ${isOpen ? "fa-xmark" : "fa-bars"}`}
+            ></i>
           </div>
         </div>
         <nav>
@@ -163,7 +195,7 @@ function RootLayout() {
               <span onClick={() => changeLanguage("uz-latn")}>
                 {t("Uzbek")}
               </span>
-              <span onClick={() => changeLanguage("uz-kril")}>
+              <span onClick={() => changeLanguage("latn")}>
                 {t("Uzbek")}
               </span>
               <span onClick={() => changeLanguage("en")}>{t("English")}</span>
@@ -185,11 +217,8 @@ function RootLayout() {
         <div className="header-top">
           <div className="container">
             <div className="logo">
-              <NavLink to='/'>
-                <img
-                  src={images.logo}
-                  alt="logo"
-                />
+              <NavLink to="/">
+                <img src={images.logo} alt="logo" />
               </NavLink>
             </div>
             <div className="logo-center">
@@ -218,6 +247,7 @@ function RootLayout() {
                 </div>
               </div>
 
+
               <div className="hamburger-menu">
                 <i
                   className="fa-solid fa-magnifying-glass"
@@ -230,12 +260,6 @@ function RootLayout() {
         </div>
         <div className="header-main">
           <div className="container">
-            <div className="dark-mode-toggle">
-              <i
-                onClick={toggleTheme}
-                className={`fa-regular fa-${isDarkMode ? "moon" : "sun"}`}
-              ></i>
-            </div>
             <nav>
               <ul>
                 {navItems.map((item, index) => (
@@ -256,12 +280,19 @@ function RootLayout() {
                 ))}
               </ul>
             </nav>
-
-            <div className="search">
-              <i
-                className="fa-solid fa-magnifying-glass"
-                onClick={toggleSearch}
-              ></i>
+            <div className="header-right-items">
+              <div className="search">
+                <i
+                  className="fa-solid fa-magnifying-glass"
+                  onClick={toggleSearch}
+                ></i>
+              </div>
+              <div className="dark-mode-toggle">
+                <i
+                  onClick={toggleTheme}
+                  className={`fa-regular fa-${isDarkMode ? "moon" : "sun"}`}
+                ></i>
+              </div>
             </div>
           </div>
         </div>
@@ -277,7 +308,7 @@ function RootLayout() {
                 src={!isDarkMode ? images.logoDark : images.logo2}
                 alt="logo"
               />
-              <p>Yangiliklarimiz xalq uchun</p>
+              <p>{t("Yangiliklarimiz xalq uchun")}</p>
               <div className="social-networks">
                 <i className="fab fa-instagram"></i>
                 <i className="fab fa-telegram"></i>
@@ -286,21 +317,22 @@ function RootLayout() {
               </div>
             </div>
             <div className="item">
-              <div className="title">Kontaktlarimiz</div>
+              <div className="title">{t("Kontaktlarimiz")}</div>
               <ul>
-                <li>Manzil: Toshkent shaxar, Gulistonv</li>
-                <li>Ferganamedia@gmail.uz</li>
-                <li>+998 (93) 123-45-67</li>
+                <li>
+                  {t("Manzil")}: {t("Toshkent shaxar, Guliston")}
+                </li>
+                <li>{t("email")}: Ferganamedia@gmail.uz</li>
+                <li>{t("phone")}: +998 (93) 123-45-67</li>
               </ul>
             </div>
             <div className="item">
-              <div className="title">Sayt xaqida</div>
+              <div className="title">{t("Sayt xaqida")}</div>
               <ul>
                 <li>
-                  Veb sayt OAV sifatida 2018 yil 28 oktyabr kuni Uzbekistan
-                  Respublikasi Prezidenti Adminstratsiyasi xuzuridagi Axborot va
-                  ommaviy kommunikatsiyalar agentligidan 1089 raqam ro’yxatga
-                  olingan.
+                  {t(
+                    "Veb sayt OAV sifatida 2018 yil 28 oktyabr kuni Uzbekistan Respublikasi Prezidenti Adminstratsiyasi xuzuridagi Axborot va ommaviy kommunikatsiyalar agentligidan 1089 raqam ro’yxatga olingan."
+                  )}
                 </li>
               </ul>
             </div>

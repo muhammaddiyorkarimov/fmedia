@@ -1,10 +1,24 @@
 import React, { useEffect, useState } from "react";
-import "./CategoryCard.css";
 import { Link } from "react-router-dom";
-import SkeletonContent from './../SkeletonContent/SkeletonContent';
+import "./CategoryCard.css";
+import { useTranslation } from "react-i18next";
 
 const CategoryCard = ({ data, category, loading }) => {
+  const { t, i18n } = useTranslation();
   const [descriptions, setDescriptions] = useState({});
+
+  const getTitleByLanguage = (item) => {
+    switch (i18n.language) {
+      case "en":
+        return item?.title_en_us || item?.title;
+      case "uz-latn":
+        return item?.title_uz_Latn || item?.title;
+      case "ru":
+        return item?.title_ru || item?.title;
+      default:
+        return item?.title;
+    }
+  };
 
   const isHeadlineLong = (headline) => {
     const wordCount = (headline?.split(" ") || []).length;
@@ -33,29 +47,15 @@ const CategoryCard = ({ data, category, loading }) => {
     const date = new Date(dateString);
     const day = date.getDate();
     const year = date.getFullYear();
-    const months = [
-      "yanvar",
-      "fevral",
-      "mart",
-      "aprel",
-      "may",
-      "iyun",
-      "iyul",
-      "avgust",
-      "sentabr",
-      "oktyabr",
-      "noyabr",
-      "dekabr",
-    ];
+    const months = i18n.t("months", { returnObjects: true });
     const month = months[date.getMonth()];
     return `${day} ${month} ${year}`;
   };
 
-
   return (
     <div className="category-card-wrapper">
       <div className="category-card-name">
-        <h1>{category.title}</h1> {/* Kategoriya nomi */}
+        <h1>{getTitleByLanguage(category)}</h1>
       </div>
 
       {Array.isArray(data?.results) && data.results.length > 0 ? (
@@ -63,17 +63,22 @@ const CategoryCard = ({ data, category, loading }) => {
           {data.results.map((item) => (
             <div className="category-card" key={item.id}>
               <div className="category-card-image">
-                <img src={item.image} alt={item.title} />
+                <img src={item.image} alt={getTitleByLanguage(item)} />
               </div>
               <div className="category-card-content">
                 <p className="category-card-date">
                   {formDate(item.created_at)}
                 </p>
                 <Link to={`/news/${item.id}`}>
-                  <Link to={`/news/${item.id}?type=world`} className="category-card-title">{item.intro}</Link>
+                  <Link
+                    to={`/news/${item.id}?type=world`}
+                    className="category-card-title"
+                  >
+                    {getTitleByLanguage(item)}
+                  </Link>
                   {!isHeadlineLong(item.headline) && (
                     <p className="category-card-description">
-                      {descriptions[item.id]}
+                      {getTitleByLanguage(descriptions[item.id])}
                     </p>
                   )}
                 </Link>
@@ -82,7 +87,7 @@ const CategoryCard = ({ data, category, loading }) => {
           ))}
         </div>
       ) : (
-        <div>Bu kategoriyada maqolalar mavjud emas.</div>
+        <div>{t("Bu kategoriyada maqolalar mavjud emas.")}</div>
       )}
     </div>
   );

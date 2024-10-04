@@ -10,8 +10,10 @@ import VideoModal from "../Modal/Modal";
 import { Link } from "react-router-dom";
 import SkeletonContent from "../SkeletonContent/SkeletonContent";
 import Modal from "../Modal/Modal";
+import { useTranslation } from 'react-i18next';
 
 const VideoCard = ({ data, category, loading }) => {
+  const { i18n } = useTranslation();
   const [selectedVideoUrl, setSelectedVideoUrl] = useState(null);
   const [selectedVideoTitle, setSelectedVideoTitle] = useState("");
   const [selectedVideoDescription, setSelectedVideoDescription] = useState("");
@@ -59,20 +61,7 @@ const VideoCard = ({ data, category, loading }) => {
     const date = new Date(dateString);
     const day = date.getDate();
     const year = date.getFullYear();
-    const months = [
-      "yanvar",
-      "fevral",
-      "mart",
-      "aprel",
-      "may",
-      "iyun",
-      "iyul",
-      "avgust",
-      "sentabr",
-      "oktyabr",
-      "noyabr",
-      "dekabr",
-    ];
+    const months = i18n.t("months", { returnObjects: true });
     const month = months[date.getMonth()];
     return `${day} ${month} ${year}`;
   };
@@ -98,10 +87,23 @@ const VideoCard = ({ data, category, loading }) => {
     return title;
   };
 
+  const getTitleByLanguage = (item) => {
+    switch (i18n.language) {
+      case "en":
+        return item?.title_en_us || item?.title;
+      case "uz-latn":
+        return item?.title_uz_Latn || item?.title;
+      case "ru":
+        return item?.title_ru || item?.title;
+      default:
+        return item?.title;
+    }
+  };
+
   return (
     <div className="video-card-wrapper">
       <div className="video-card-name">
-        <h1>Videos</h1>
+        <h1>Video</h1>
         <div className="swiper-btns">
           <div ref={prevRef} className="custom-prev">
             <i className="fa-solid fa-arrow-left-long"></i>
@@ -193,7 +195,7 @@ const VideoCard = ({ data, category, loading }) => {
                     </p>
                     <Link to={`/news/${item.id}?type=video`}>
                       <h2 className="video-card-title">
-                        {truncateTitle(item.title)}
+                        {getTitleByLanguage(truncateTitle(item))}
                       </h2>
                     </Link>
                   </div>
