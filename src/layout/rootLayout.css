@@ -489,6 +489,10 @@ footer .bottom a {
         width: auto;
         white-space: nowrap;
     }
+
+    .language .language-selector .dropdown-menu {
+        left: -50px !important;
+    }
 }
 
 @media (max-width: 480px) {
