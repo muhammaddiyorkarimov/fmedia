@@ -150,7 +150,7 @@ function RootLayout() {
 
   return (
     <div className="root-layout">
-      <div className={`sidebar ${isOpen ? "active" : ""}`}>
+      {/* <div className={`sidebar ${isOpen ? "active" : ""}`}>
         <div className="logo">
           <NavLink to="/">
             <img
@@ -212,13 +212,16 @@ function RootLayout() {
             />
           </div>
         </div>
-      </div>
+      </div> */}
       <header className={`header ${isHeaderVisible ? "" : "hidden"}`}>
         <div className="header-top">
           <div className="container">
             <div className="logo">
               <NavLink to="/">
-                <img src={images.logo} alt="logo" />
+                <img
+                  // width={200}
+                  src={images.logo}
+                  alt="logo" />
               </NavLink>
             </div>
             <div className="logo-center">
@@ -248,13 +251,13 @@ function RootLayout() {
               </div>
 
 
-              <div className="hamburger-menu">
+              {/* <div className="hamburger-menu">
                 <i
                   className="fa-solid fa-magnifying-glass"
                   onClick={toggleSearch}
                 ></i>
                 <i onClick={toggleOpenSidebar} className="fa-solid fa-bars"></i>
-              </div>
+              </div> */}
             </div>
           </div>
         </div>
