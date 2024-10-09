@@ -8,7 +8,7 @@ import { useTranslation } from "react-i18next";
 
 function TopNews() {
   const { data, loading, error } = useFetch(LandingService.getTopNews);
-  const { i18n } = useTranslation();
+  const { t, i18n } = useTranslation();
 
   if (loading)
     return <div style={{ marginTop: "150px" }}>{<SkeletonContent />}</div>;
@@ -18,16 +18,12 @@ function TopNews() {
   const bottomNews = data?.results?.slice(2, 5);
   const sideNews = data?.results?.slice(5, 8);
 
-  console.log(topNews);
-
   const getTitleByLanguage = (item) => {
-    console.log(item);
-
     switch (i18n.language) {
       case "en":
         return item?.title_en_us || item?.title;
-      case "uz-latn":
-        return item?.title_uz_Latn || item?.title;
+      case "uz-cyrl":
+        return item?.title_uz_Cyrl || item?.title;
       case "ru":
         return item?.title_ru || item?.title;
       default:
@@ -38,7 +34,7 @@ function TopNews() {
   return (
     <div className="top-news-wrap">
       <div className="container">
-        <h1 className="title">Top yangiliklar</h1>
+        <h1 className="title">{t('Top yangiliklar')}</h1>
         <div className="news-layout">
           <div className="main-news-wrapper">
             <div className="top-news">
@@ -82,12 +78,12 @@ function TopNews() {
                                         </div> */}
                     <Link to={`/news/${news.id}?type=world`}>
                       {getTitleByLanguage(
-                        news.title.split(" ").slice(0, 10).join(" ")
+                        news
                       )}
                     </Link>
                     <p className="description">
                       {getTitleByLanguage(
-                        news.intro.split(" ").slice(0, 50).join(" ")
+                        news
                       )}
                       ...
                     </p>
@@ -113,7 +109,7 @@ function TopNews() {
                                         <span>{news.date}</span>
                                     </div> */}
                   <Link to={`/news/${news.id}?type=world`}>
-                    {getTitleByLanguage(news.title)}
+                    {getTitleByLanguage(news)}
                   </Link>
                 </div>
               </div>

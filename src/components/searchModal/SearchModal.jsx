@@ -1,101 +1,130 @@
-import React from 'react';
-import { useCallback, useEffect, useState } from 'react';
-import './searchModal.css';
-import LandingService from '../../services/landing/landing';
-import useFetch from '../../hooks/useFetch';
-import { Link } from 'react-router-dom';
-import { useTranslation } from 'react-i18next';
+import React, { useCallback, useEffect, useState } from "react";
+import "./searchModal.css";
+import LandingService from "../../services/landing/landing";
+import useFetch from "../../hooks/useFetch";
+import { Link } from "react-router-dom";
+import { useTranslation } from "react-i18next";
 
 const SearchModal = ({ isOpen, onClose }) => {
-  const { i18n } = useTranslation(); 
-  const [searchTerm, setSearchTerm] = useState('');
-  const [articles, setArticles] = useState([]);
+  const { t, i18n } = useTranslation();
+  const [searchTerm, setSearchTerm] = useState("");
+  const [filteredArticles, setFilteredArticles] = useState([]);
+  const [manualSearch, setManualSearch] = useState(false);
 
   const fetchArticles = useCallback(() => {
-    if (searchTerm.trim()) {
-      return LandingService.getArticles(searchTerm);
-    }
-    return Promise.resolve([]); 
-  }, [searchTerm]);
+    return LandingService.getArticles();
+  }, []);
 
-  const { data, loading, error } = useFetch(fetchArticles, { search: searchTerm });
+  const { data, loading, error } = useFetch(fetchArticles, {});
 
   useEffect(() => {
-    if (data?.results) {
-      setArticles(data.results);
+    if (data?.results && searchTerm.trim()) {
+      const filtered = data.results.filter((article) => {
+        const title = getTitleByLanguage(article);
+        return title.toLowerCase().includes(searchTerm.toLowerCase());
+      });
+      setFilteredArticles(filtered);
     } else {
-      setArticles([]);
+      setFilteredArticles([]);
     }
-  }, [data]);
+  }, [data, searchTerm]);
+
+  useEffect(() => {
+    if (searchTerm && !manualSearch) {
+      setManualSearch(false);
+    }
+  }, [searchTerm]);
 
   useEffect(() => {
     const params = new URLSearchParams(window.location.search);
-    const query = params.get('search') || '';
+    const query = params.get("search") || "";
     setSearchTerm(query);
   }, []);
 
   useEffect(() => {
     const params = new URLSearchParams(window.location.search);
-
     if (searchTerm) {
-      params.set('search', searchTerm);
+      params.set("search", searchTerm);
     } else {
-      params.delete('search');
+      params.delete("search");
     }
-
-    window.history.pushState({}, '', `${window.location.pathname}?${params.toString()}`);
+    window.history.pushState(
+      {},
+      "",
+      `${window.location.pathname}?${params.toString()}`
+    );
   }, [searchTerm]);
 
   const handleSearch = (e) => {
     e.preventDefault();
+    if (!searchTerm.trim()) return;
+    setManualSearch(true);
+  };
+
+  const handleClose = () => {
+    setSearchTerm("");
+    onClose();
   };
 
   const getTitleByLanguage = (item) => {
+    if (!item) return "";
     switch (i18n.language) {
       case "en":
-        return item?.title_en_us || item?.title;
-      case "uz-latn":
-        return item?.title_uz_Latn || item?.title;
+        return item.title_en_us || item.title;
+      case "uz-cyrl":
+        return item.title_uz_Cyrl || item.title;
       case "ru":
-        return item?.title_ru || item?.title;
+        return item.title_ru || item.title;
       default:
-        return item?.title;
+        return item.title;
     }
   };
 
-
-
   return (
-    <div className={`modal-backdrop ${isOpen ? 'active' : ''}`} onClick={onClose}>
-      <div className={`modal-content ${isOpen ? 'open' : ''}`} onClick={(e) => e.stopPropagation()}>
+    <div
+      className={`modal-backdrop ${isOpen ? "active" : ""}`}
+      onClick={handleClose}
+    >
+      <div
+        className={`modal-content ${isOpen ? "open" : ""}`}
+        onClick={(e) => e.stopPropagation()}
+      >
         <form onSubmit={handleSearch}>
           <input
             type="text"
-            placeholder="Search..."
+            placeholder={t("Qidiruv")}
             value={searchTerm}
-            onChange={(e) => setSearchTerm(e.target.value)}
+            onChange={(e) => {
+              setSearchTerm(e.target.value);
+              setManualSearch(false);
+            }}
           />
           <ul>
             {loading ? (
-              <p>Yuklanmoqda...</p>
+              <p>{t("Yuklanmoqda...")}</p>
             ) : error ? (
               <p>{error.message}</p>
             ) : (
               <>
-                {articles.length > 0 ? (
-                  articles.map((result, index) => (
+                {filteredArticles.length > 0 ? (
+                  filteredArticles.map((result, index) => (
                     <li key={index}>
                       <span>{getTitleByLanguage(result.category)}</span>
-                      <Link onClick={onClose} to={`/news/${result.id}?type=world`}>{getTitleByLanguage(result.title)}</Link>
+                      <Link
+                        onClick={handleClose}
+                        to={`/news/${result.id}?type=world`}
+                      >
+                        {getTitleByLanguage(result)}
+                      </Link>
                     </li>
                   ))
                 ) : (
-                  <p></p>
+                  <p>{t("Hech qanday natija topilmadi")}</p>
                 )}
               </>
             )}
           </ul>
-          <button type="submit">Search</button>
+          <button type="submit">{t("Qidiruv")}</button>
         </form>
 
         {error && <p>Error fetching articles: {error.message}</p>}

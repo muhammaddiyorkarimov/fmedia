@@ -15,7 +15,6 @@ function CategoryPage() {
     loading: worldDataLoading,
     error: worldDataError,
   } = useFetch(LandingService.getAllArticles);
-  console.log(worldDataLoading)
 
   useEffect(() => {
     const loadCategory = async () => {

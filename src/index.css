@@ -25,3 +25,9 @@ i, button {
 a {
     text-decoration: none;
 }
+
+@media (max-width: 480px) {
+    .container {
+        margin: 0 5px;
+    }
+}

@@ -30,16 +30,6 @@ const WorldCard = ({ data, category }) => {
     return description;
   };
 
-  useEffect(() => {
-    if (data?.results?.length) {
-      const newDescriptions = data.results.reduce((acc, item) => {
-        acc[item.id] = shortenDescription(item.id, item.content, 2);
-        return acc;
-      }, {});
-      setDescriptions(newDescriptions);
-    }
-  }, [data]);
-
   const formDate = (dateString) => {
     const date = new Date(dateString);
     const day = date.getDate();
@@ -53,15 +43,26 @@ const WorldCard = ({ data, category }) => {
     switch (i18n.language) {
       case "en":
         return item?.title_en_us || item?.title;
-      case "uz-latn":
-        return item?.title_uz_Latn || item?.title;
+      case "uz-cyrl":
+        return item?.title_uz_Cyrl || item?.title;
       case "ru":
         return item?.title_ru || item?.title;
       default:
         return item?.title;
     }
   };
-  console.log(data);
+  useEffect(() => {
+    if (Array.isArray(data?.results) && data.results.length) {
+      const newDescriptions = data.results.reduce((acc, item) => {
+        const descriptionByLanguage = getTitleByLanguage(item);
+        if (descriptionByLanguage) {
+          acc[item.id] = shortenDescription(item.id, descriptionByLanguage, 4);
+        }
+        return acc;
+      }, {});
+      setDescriptions(newDescriptions);
+    }
+  }, [data, i18n.language]);
 
   return (
     <div className="world-card-wrapper">
@@ -108,7 +109,7 @@ const WorldCard = ({ data, category }) => {
                     {!isHeadlineLong(item.headline) && (
                       <p className="world-card-description">
                         {" "}
-                        {getTitleByLanguage(descriptions[item.id])}
+                        {descriptions[item.id]}
                       </p>
                     )}
                   </Link>

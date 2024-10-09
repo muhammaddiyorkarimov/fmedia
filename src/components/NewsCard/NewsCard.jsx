@@ -5,9 +5,8 @@ import { Link } from "react-router-dom";
 import { useTranslation } from "react-i18next";
 
 const NewsCard = ({ data, type }) => {
-  const { i18n } = useTranslation(); 
+  const { t, i18n } = useTranslation(); 
   const [categoryData, setCategoryData] = useState([]);
-  console.log(data, type);
 
   useEffect(() => {
     const loadCategory = async () => {
@@ -52,8 +51,8 @@ const NewsCard = ({ data, type }) => {
       switch (i18n.language) {
         case "en":
           return item?.title_en_us || item?.title;
-        case "uz-latn":
-          return item?.title_uz_Latn || item?.title;
+        case "uz-cyrl":
+          return item?.title_uz_Cyrl || item?.title;
         case "ru":
           return item?.title_ru || item?.title;
         default:
@@ -65,7 +64,7 @@ const NewsCard = ({ data, type }) => {
 
   return (
     <div className="news-card-wrapper">
-      <h1>{type === "video" ? "So'ngi videolar" : "So'ngi yangiliklar"}</h1>{" "}
+      <h1>{type === "video" ? t("So'ngi videolar") : t("So'ngi yangiliklar")}</h1>{" "}
       <div className="new-card-wrapper">
         {randomSixNews?.map((newsItem, index) => (
           <div key={index} className="news-card">

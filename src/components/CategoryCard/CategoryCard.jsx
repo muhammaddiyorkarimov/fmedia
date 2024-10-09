@@ -11,14 +11,15 @@ const CategoryCard = ({ data, category, loading }) => {
     switch (i18n.language) {
       case "en":
         return item?.title_en_us || item?.title;
-      case "uz-latn":
-        return item?.title_uz_Latn || item?.title;
+      case "uz-cyrl":
+        return item?.title_uz_Cyrl || item?.title;
       case "ru":
         return item?.title_ru || item?.title;
       default:
         return item?.title;
     }
   };
+
 
   const isHeadlineLong = (headline) => {
     const wordCount = (headline?.split(" ") || []).length;

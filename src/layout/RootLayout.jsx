@@ -225,7 +225,7 @@ function RootLayout() {
               </NavLink>
             </div>
             <div className="logo-center">
-              <p>Fergana Media.uz</p>
+              <p>Fergana Media</p>
             </div>
             <div className="language">
               <img src={images.globe} alt="globe icon" />
@@ -308,6 +308,8 @@ function RootLayout() {
           <div className="items">
             <div className="item">
               <img
+                // width={150}
+                style={{width: '250px', height: '50px', objectFit: 'cover'}}
                 src={!isDarkMode ? images.logoDark : images.logo2}
                 alt="logo"
               />

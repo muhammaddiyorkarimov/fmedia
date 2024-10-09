@@ -1,5 +1,6 @@
 import logo from '../../src/images/logo/logo.svg'
-import logoDark from '../../src/images/logo/logo dark.svg'
+import logoDark from '../../src/images/logo/logo.png'
+import logoLight from '../../src/images/logo/logoLight.png'
 import logo2 from '../../src/images/logo/logo2.svg'
 
 
@@ -20,6 +21,7 @@ const images = {
   logo,
   logoDark,
   logo2,
+  logoLight,
   
   sunny,
   sun,

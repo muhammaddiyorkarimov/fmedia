@@ -3,28 +3,19 @@ import "./Modal.css";
 import { Link } from "react-router-dom";
 import { useTranslation } from 'react-i18next';
 
-const Modal = ({ videoUrl, title, description, isOpen, onClose }) => {
+const Modal = ({ videoUrl, title, description, isOpen, onClose, id }) => {
   const { t, i18n } = useTranslation();
   if (!isOpen) return null;
 
+  
+  
+
   const truncateTitle = (title, maxLines = 4) => {
     const maxLength = 260;
-    if (title.length > maxLength) {
+    if (title?.length > maxLength) {
       return title.slice(0, maxLength) + "...";
     }
     return title;
-  };
-  const getTitleByLanguage = (item) => {
-    switch (i18n.language) {
-      case "en":
-        return item?.title_en_us || item?.title;
-      case "uz-latn":
-        return item?.title_uz_Latn || item?.title;
-      case "ru":
-        return item?.title_ru || item?.title;
-      default:
-        return item?.title;
-    }
   };
 
   return (
@@ -39,9 +30,9 @@ const Modal = ({ videoUrl, title, description, isOpen, onClose }) => {
             title="YouTube Video"
           ></iframe>
         </div>
-        <h2>{getTitleByLanguage(title)}</h2>
-        <p>{getTitleByLanguage(truncateTitle(description))}</p>
-        <Link to={`newsVideo/`} class="button">
+        <h2>{title}</h2>
+        <p>{truncateTitle(description)}</p>
+        <Link to={`/news/${id}?type=video`} class="button">
           <div class="arrow"></div>
           <span>{t("Maqolani o'qish")}</span>
         </Link>

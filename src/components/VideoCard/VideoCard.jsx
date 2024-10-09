@@ -6,18 +6,18 @@ import "swiper/css/navigation";
 import "swiper/css/pagination";
 import { Navigation, Autoplay } from "swiper/modules";
 import images from "../../images";
-import VideoModal from "../Modal/Modal";
 import { Link } from "react-router-dom";
 import SkeletonContent from "../SkeletonContent/SkeletonContent";
 import Modal from "../Modal/Modal";
-import { useTranslation } from 'react-i18next';
+import { useTranslation } from "react-i18next";
 
 const VideoCard = ({ data, category, loading }) => {
-  const { i18n } = useTranslation();
+  const { t, i18n } = useTranslation();
   const [selectedVideoUrl, setSelectedVideoUrl] = useState(null);
   const [selectedVideoTitle, setSelectedVideoTitle] = useState("");
   const [selectedVideoDescription, setSelectedVideoDescription] = useState("");
   const [isModalOpen, setIsModalOpen] = useState(false);
+  const [itemId, setItemId] = useState(null)
 
   const prevRef = useRef(null);
   const nextRef = useRef(null);
@@ -33,7 +33,7 @@ const VideoCard = ({ data, category, loading }) => {
     }
   }, [prevRef, nextRef]);
 
-  const handleVideoClick = (url, title, intro) => {
+  const handleVideoClick = (url, title, intro, id) => {
     const videoIdMatch = url.match(
       /(?:youtu\.be\/|youtube\.com\/(?:embed\/|v\/|watch\?v=|watch\?.+&v=))([^?&"'>]+)/
     );
@@ -45,6 +45,7 @@ const VideoCard = ({ data, category, loading }) => {
       setSelectedVideoUrl(embedUrl);
       setSelectedVideoTitle(title);
       setSelectedVideoDescription(intro);
+      setItemId(id)
       setIsModalOpen(true);
     } else {
       console.error("Invalid YouTube URL");
@@ -55,7 +56,6 @@ const VideoCard = ({ data, category, loading }) => {
     setIsModalOpen(false);
     setSelectedVideoUrl(null);
   };
-
 
   const formDate = (dateString) => {
     const date = new Date(dateString);
@@ -87,23 +87,23 @@ const VideoCard = ({ data, category, loading }) => {
     return title;
   };
 
-  const getTitleByLanguage = (item) => {
+  const getTitleByLanguage = (item, field = "title") => {
     switch (i18n.language) {
       case "en":
-        return item?.title_en_us || item?.title;
-      case "uz-latn":
-        return item?.title_uz_Latn || item?.title;
+        return item?.[`${field}_en_us`] || item?.[field];
+      case "uz-cyrl":
+        return item?.[`${field}_uz_Cyrl`] || item?.[field];
       case "ru":
-        return item?.title_ru || item?.title;
+        return item?.[`${field}_ru`] || item?.[field];
       default:
-        return item?.title;
+        return item?.[field];
     }
   };
 
   return (
     <div className="video-card-wrapper">
       <div className="video-card-name">
-        <h1>Video</h1>
+        <h1>{t("Videolar")}</h1>
         <div className="swiper-btns">
           <div ref={prevRef} className="custom-prev">
             <i className="fa-solid fa-arrow-left-long"></i>
@@ -169,11 +169,22 @@ const VideoCard = ({ data, category, loading }) => {
                     style={{ background: !cover ? "black" : "none" }}
                   >
                     <button
-                      onClick={() => handleVideoClick(item.url, item.title, item.intro)}
+                      onClick={() =>
+                        handleVideoClick(
+                          item.url,
+                          getTitleByLanguage(item, "title"),
+                          getTitleByLanguage(item, "intro"),
+                          item.id
+                        )
+                      }
                       style={{ border: "none", background: "none" }}
                     >
                       {cover ? (
-                        <img className="video-card-image-images" src={cover} alt={item.title} />
+                        <img
+                          className="video-card-image-images"
+                          src={cover}
+                          alt={item.title}
+                        />
                       ) : (
                         <div
                           style={{
@@ -184,7 +195,12 @@ const VideoCard = ({ data, category, loading }) => {
                         />
                       )}
                       <div className="video-card-youtube-icon">
-                        <img width={30} height={30} src={images.youtube_icon} alt="youtube icon" />
+                        <img
+                          width={30}
+                          height={30}
+                          src={images.youtube_icon}
+                          alt="youtube icon"
+                        />
                       </div>
                     </button>
                   </div>
@@ -212,6 +228,7 @@ const VideoCard = ({ data, category, loading }) => {
         onClose={handleCloseModal}
         title={selectedVideoTitle}
         description={selectedVideoDescription}
+        id={itemId}
       />
     </div>
   );

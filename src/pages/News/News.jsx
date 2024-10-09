@@ -44,7 +44,6 @@ function News() {
 
     loadData();
   }, [id, type]);
-  console.log(newsData, type);
 
   return (
     <div className="news-wrapper">
