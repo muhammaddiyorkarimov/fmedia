@@ -29,7 +29,6 @@ function RootLayout() {
   }, [activeIndex]);
 
   const { data, loading, error } = useFetch(LandingService.getNavbar);
-  console.log(data);
 
   const changeLanguage = async (lang) => {
     try {
@@ -44,7 +43,6 @@ function RootLayout() {
     const fetchCategories = async () => {
       try {
         const response = await api.get(`/${i18n.language.toLowerCase()}/`);
-        console.log(`/${i18n.language.toLowerCase()}/`);
 
         if (response.status === 200) {
           setCategories(response.data);
@@ -220,7 +218,7 @@ function RootLayout() {
               <NavLink to="/">
                 <img
                   // width={200}
-                  src={images.logo}
+                  src={images.img9901}
                   alt="logo" />
               </NavLink>
             </div>

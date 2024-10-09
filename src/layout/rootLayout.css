@@ -31,7 +31,7 @@ header .header-top {
     align-items: center;
     justify-content: center;
     background-color: var(--text-active);
-    height: 60px;
+    height: 50px;
 }
 
 
@@ -432,18 +432,25 @@ footer .bottom a {
 }
 
 @media (max-width: 768px) {
+    .header-main {
+        height: 47px;
+        padding: 5px 0 !important;
+    }
+    .header-main nav ul li a {
+        font-size: 14px;
+    }
     header .logo img {
         width: 130px;
     }
 
     header .logo-center p {
         /* display: none; */
-        font-size: 14px;
+        font-size: 13px;
         white-space: nowrap;
     }
 
     .header-top {
-        height: 60px !important;
+        height: 50px !important;
     }
 
     .header-top .hamburger-menu {
@@ -472,6 +479,10 @@ footer .bottom a {
 
     .header-main .container {
         gap: 20px;
+    }
+
+    .header-top .logo a {
+        margin-left: -20px;
     }
 
     .header-main .container nav {
@@ -520,6 +531,6 @@ footer .bottom a {
     }
 
     footer .container .items .item img {
-        margin-left: 0
+        margin-left: 0;
     }
 }

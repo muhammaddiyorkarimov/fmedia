@@ -32,7 +32,6 @@ function News() {
           setNewsData(await LandingVideos.getVideos());
           return;
         }
-        console.log("API response:", results);
         setArticleDetailedData(results);
       } catch (error) {
         setError("Error fetching data. Please try again later.");
