@@ -31,7 +31,7 @@ header .header-top {
     align-items: center;
     justify-content: center;
     background-color: var(--text-active);
-    height: 50px;
+    height: 40px;
 }
 
 
@@ -43,7 +43,7 @@ header .header-top .container {
 
 .header-top .logo-center {
     font-weight: 800;
-    font-size: 28px;
+    font-size: 20px;
     color: white;
     text-transform: uppercase;
     letter-spacing: 1px;
@@ -126,6 +126,7 @@ header .header-top .container {
     vertical-align: center;
     display: flex;
     justify-content: center;
+    height: 40px;
 }
 
 .header-main .container {
@@ -160,7 +161,7 @@ nav ul {
 
 nav ul li {
     list-style: none;
-    padding: 15px 0;
+    padding: 10px 0;
 }
 
 nav ul li {
@@ -424,7 +425,7 @@ footer .bottom a {
 }
 
 .header-top .logo img {
-    margin-left: -30px;
+    margin-left: -27px;
 }
 
 @media (max-width: 1040px) {
