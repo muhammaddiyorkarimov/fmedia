@@ -217,7 +217,7 @@ function RootLayout() {
             <div className="logo">
               <NavLink to="/">
                 <img
-                  // width={200}
+                  width={200}
                   src={images.img9901}
                   alt="logo" />
               </NavLink>
